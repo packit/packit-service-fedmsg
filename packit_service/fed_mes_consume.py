@@ -54,7 +54,7 @@ class Consumerino:
         :param msg_id: str
         :return: dict, the fedmsg
         """
-        logger.debug(f"Proccessing message: {msg_id}")
+        logger.debug(f"Processing message: {msg_id}")
         url = self.datagrepper_url.format(msg_id=msg_id)
         response = requests.get(url)
         msg_dict = response.json()
