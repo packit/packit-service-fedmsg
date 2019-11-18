@@ -9,95 +9,17 @@ services:
       - 6379:6379
     user: "123123"
 
-  redis-commander:
-    container_name: redis-commander
-    hostname: redis-commander
-    image: rediscommander/redis-commander:latest
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: "6379"
-    ports:
-      - 8081:8081
-    depends_on:
-      - redis
-    user: "123123"
-
-  flower:
-    image: mher/flower
-    container_name: flower
-    ports:
-      - 5555:5555
-    depends_on:
-      - redis
-    environment:
-      CELERY_BROKER_URL: redis://redis:6379/0
-    user: "123123"
-
-  packit-service-worker:
-    container_name: packit-worker
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
-    image: docker.io/usercont/packit-service-worker:dev
-    command: /usr/bin/run_worker.sh
-    tty: true
-    depends_on:
-      - redis
-    environment:
-      DEPLOYMENT: dev
-      REDIS_SERVICE_HOST: redis
-      APP: packit_service.worker.tasks
-      KRB5CCNAME: FILE:/tmp/krb5cc_packit
-    volumes:
-      - ./packit_service:/src-packit-service/packit_service:ro,z
-      - ./secrets/dev/.packit.yaml:/home/packit/.config/.packit.yaml:ro,z
-      # worker should not require packit-service.yaml
-      - ./secrets/dev/packit-service.yaml:/home/packit/.config/packit-service.yaml:ro,z
-      - ./secrets/dev/copr:/home/packit/.config/copr:ro,z
-      - ./secrets/dev/ssh_config:/packit-ssh/config:ro,z
-      - ./secrets/dev/id_rsa.pub:/packit-ssh/id_rsa.pub:ro,z
-      - ./secrets/dev/id_rsa:/packit-ssh/id_rsa:ro,z
-      - ./secrets/dev/fedora.keytab:/secrets/fedora.keytab:ro,z
-      - ./secrets/dev/private-key.pem:/secrets/private-key.pem:ro,z
-      #- .:/src:ro,z
-    user: "123123"
-
-  packit-service:
-    container_name: packit-service
+  fedmsg:
+    container_name: fedmsg
     build:
       context: .
       dockerfile: Dockerfile
-    image: docker.io/usercont/packit-service:dev
-    command: /usr/bin/run_httpd.sh
-    depends_on:
-      - redis
-    ports:
-      - 8443:8443
-    environment:
-      DEPLOYMENT: dev
-      REDIS_SERVICE_HOST: redis
-    volumes:
-      - ./packit_service:/usr/local/lib/python3.7/site-packages/packit_service:ro,z
-      # There's no secrets/ by default. You have to create (or symlink to other dir) it yourself.
-      - ./secrets/dev/httpd-packit.conf:/etc/httpd/conf.d/httpd-packit.conf:ro,Z
-      - ./secrets/dev/packit-service.yaml:/home/packit/.config/packit-service.yaml:ro,z
-      - ./secrets/dev/packit.yaml:/home/packit/.config/.packit.yaml:ro,z
-      - ./secrets/dev/fedora.keytab:/secrets/fedora.keytab:ro,z
-      - ./secrets/dev/private-key.pem:/secrets/private-key.pem:ro,z
-      - ./secrets/dev/fullchain.pem:/secrets/fullchain.pem:ro,z
-      - ./secrets/dev/privkey.pem:/secrets/privkey.pem:ro,z
-    user: "123123"
-
-  packit-fedmsg:
-    container_name: packit-fedmsg-listener
-    build:
-      context: .
-      dockerfile: Dockerfile.fedmsg
     image: docker.io/usercont/packit-service-fedmsg:dev
-    command: packit-service listen-to-fedora-messaging
+    command: listen-to-fedora-messaging
     environment:
       FEDORA_MESSAGING_CONF: /home/packit/.config/fedora.toml
     volumes:
-      - ./packit_service:/usr/local/lib/python3.7/site-packages/packit_service:ro,z
-      - ./secrets/dev/fedora.toml:/home/packit/.config/fedora.toml:ro,z
+      - ./packit_service_fedmsg:/usr/local/lib/python3.7/site-packages/packit_service_fedmsg:ro,z
+      # get it from secrets
+      - ./fedora.toml:/home/packit/.config/fedora.toml:ro,z
     user: "123123"
