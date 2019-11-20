@@ -7,6 +7,7 @@
       name:
       - python3-celery
       - python3-redis
+      - redis  # redis-cli
       - python3-click
       - git # setuptools-scm
       - fedora-messaging
