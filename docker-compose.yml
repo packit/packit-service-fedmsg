@@ -9,6 +9,19 @@ services:
       - 6379:6379
     user: "123123"
 
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    ports:
+      - 8081:8081
+    depends_on:
+      - redis
+    user: "123123"
+
   fedmsg:
     container_name: fedmsg
     build:
