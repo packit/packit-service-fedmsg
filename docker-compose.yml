@@ -18,6 +18,7 @@ services:
     command: listen-to-fedora-messaging
     environment:
       FEDORA_MESSAGING_CONF: /home/packit/.config/fedora.toml
+      REDIS_SERVICE_HOST: redis
     volumes:
       - ./packit_service_fedmsg:/usr/local/lib/python3.7/site-packages/packit_service_fedmsg:ro,z
       # get it from secrets
