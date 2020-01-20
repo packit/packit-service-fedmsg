@@ -29,6 +29,11 @@ from fedora_messaging.message import Message
 config.conf.setup_logging()
 logger = getLogger(__name__)
 
+INTERESTED_TOPICS = {
+    "org.fedoraproject.prod.copr.build.end",
+    "org.fedoraproject.prod.copr.build.start",
+}
+
 
 class Consumerino:
     """
@@ -61,8 +66,11 @@ class Consumerino:
             logger.info("Not handled by packit!")
             return
 
-        logger.info(message.body.get("what"))
+        if message.topic not in INTERESTED_TOPICS:
+            logger.debug("Not interested topic")
+            return
 
+        logger.info(message.body.get("what"))
         message.body["topic"] = message.topic
         self.celery_app.send_task(
             name="task.steve_jobs.process_message", kwargs={"event": message.body}
