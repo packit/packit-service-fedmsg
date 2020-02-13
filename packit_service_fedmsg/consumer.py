@@ -56,6 +56,21 @@ class Consumerino:
             self._celery_app = Celery(backend=redis_url, broker=redis_url)
         return self._celery_app
 
+    @staticmethod
+    def configure_sentry():
+        secret_key = getenv("SENTRY_SECRET")
+        if not secret_key:
+            return
+
+        import sentry_sdk
+
+        # with the use of default integrations
+        # https://docs.sentry.io/platforms/python/default-integrations/
+        sentry_sdk.init(secret_key, environment=getenv("DEPLOYMENT"))
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_tag("runner-type", "packit-service-fedmsg")
+
     def fedora_messaging_callback(self, message: Message):
         """
         Create celery task from fedora message
@@ -83,4 +98,6 @@ class Consumerino:
         # Start consuming messages using our callback. This call will block until
         # a KeyboardInterrupt is raised, or the process receives a SIGINT or SIGTERM
         # signal.
+
+        self.configure_sentry()
         api.consume(self.fedora_messaging_callback)
