@@ -13,3 +13,9 @@
           - fedora-messaging
           - python3-copr-messaging # json schemas
         state: present
+
+    - name: Install pip deps
+      pip:
+        name:
+          - sentry-sdk==0.14.0
+        executable: pip3
