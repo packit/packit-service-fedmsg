@@ -77,8 +77,8 @@ class Consumerino:
         :param message: Message from Fedora message bus
         :return: None
         """
-        if message.body.get("owner") != "packit":
-            logger.info("Not handled by packit!")
+        if message.body.get("user") != "packit":
+            logger.info("Not built by packit!")
             return
 
         if message.topic not in INTERESTED_TOPICS:
