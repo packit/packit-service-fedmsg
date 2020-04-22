@@ -87,6 +87,7 @@ class Consumerino:
 
         logger.info(message.body.get("what"))
         message.body["topic"] = message.topic
+        message.body["timestamp"] = message.timestamp
         self.celery_app.send_task(
             name="task.steve_jobs.process_message", kwargs={"event": message.body}
         )
