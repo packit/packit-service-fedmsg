@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from datetime import datetime
 from logging import getLogger
 from os import getenv
 
@@ -87,7 +88,7 @@ class Consumerino:
 
         logger.info(message.body.get("what"))
         message.body["topic"] = message.topic
-        message.body["timestamp"] = message.timestamp
+        message.body["timestamp"] = datetime.utcnow().timestamp()
         self.celery_app.send_task(
             name="task.steve_jobs.process_message", kwargs={"event": message.body}
         )
