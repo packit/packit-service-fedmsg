@@ -30,6 +30,12 @@ from fedora_messaging.message import Message
 config.conf.setup_logging()
 logger = getLogger(__name__)
 
+COPR_TOPICS = {
+    "org.fedoraproject.prod.copr.build.end",
+    "org.fedoraproject.prod.copr.build.start",
+}
+KOJI_TOPICS = {"org.fedoraproject.prod.buildsys.task.state.change"}
+
 
 class Consumerino:
     """
@@ -73,11 +79,16 @@ class Consumerino:
         :param message: Message from Fedora message bus
         :return: None
         """
-        if message.body.get("user") != "packit":
-            logger.info("Not built by packit!")
+
+        if message.topic in COPR_TOPICS and message.body.get("user") != "packit":
+            logger.info("Copr build not built by packit!")
             return
 
-        logger.info(message.body.get("what"))
+        if message.topic in KOJI_TOPICS and message.body.get("owner") != "packit":
+            logger.info("Koji build not built by packit!")
+            return
+
+        logger.info(f"{message.topic}: {message.body.get('what')}")
         message.body["topic"] = message.topic
         message.body["timestamp"] = datetime.utcnow().timestamp()
         self.celery_app.send_task(
