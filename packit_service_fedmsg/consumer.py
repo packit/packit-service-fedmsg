@@ -30,11 +30,6 @@ from fedora_messaging.message import Message
 config.conf.setup_logging()
 logger = getLogger(__name__)
 
-INTERESTED_TOPICS = {
-    "org.fedoraproject.prod.copr.build.end",
-    "org.fedoraproject.prod.copr.build.start",
-}
-
 
 class Consumerino:
     """
@@ -80,10 +75,6 @@ class Consumerino:
         """
         if message.body.get("user") != "packit":
             logger.info("Not built by packit!")
-            return
-
-        if message.topic not in INTERESTED_TOPICS:
-            logger.debug("Not interested topic")
             return
 
         logger.info(message.body.get("what"))
