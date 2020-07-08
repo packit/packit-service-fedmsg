@@ -48,12 +48,11 @@ class Consumerino:
     @property
     def celery_app(self):
         if self._celery_app is None:
-            redis_host = getenv("REDIS_SERVICE_HOST", "redis")
-            redis_port = getenv("REDIS_SERVICE_PORT", "6379")
-            redis_db = getenv("REDIS_SERVICE_DB", "0")
-            redis_url = "redis://{host}:{port}/{db}".format(
-                host=redis_host, port=redis_port, db=redis_db
-            )
+            password = getenv("REDIS_PASSWORD", "")
+            host = getenv("REDIS_SERVICE_HOST", "redis")
+            port = getenv("REDIS_SERVICE_PORT", "6379")
+            db = getenv("REDIS_SERVICE_DB", "0")
+            redis_url = f"redis://:{password}@{host}:{port}/{db}"
 
             self._celery_app = Celery(backend=redis_url, broker=redis_url)
         return self._celery_app
