@@ -1,6 +1,5 @@
 ---
 - project:
-    name: packit-service/packit-service-fedmsg
     check:
       jobs:
         - pre-commit
