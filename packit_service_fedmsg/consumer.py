@@ -48,13 +48,24 @@ class Consumerino:
     @property
     def celery_app(self):
         if self._celery_app is None:
-            password = getenv("REDIS_PASSWORD", "")
-            host = getenv("REDIS_SERVICE_HOST", "redis")
-            port = getenv("REDIS_SERVICE_PORT", "6379")
-            db = getenv("REDIS_SERVICE_DB", "0")
-            redis_url = f"redis://:{password}@{host}:{port}/{db}"
+            bt_options = {}
+            if getenv("AWS_ACCESS_KEY_ID") and getenv("AWS_SECRET_ACCESS_KEY"):
+                broker_url = "sqs://"
+                if not getenv("QUEUE_NAME_PREFIX"):
+                    raise ValueError("QUEUE_NAME_PREFIX not set")
+                bt_options["queue_name_prefix"] = getenv("QUEUE_NAME_PREFIX")
+            elif getenv("REDIS_SERVICE_HOST"):
+                host = getenv("REDIS_SERVICE_HOST")
+                password = getenv("REDIS_PASSWORD", "")
+                port = getenv("REDIS_SERVICE_PORT", "6379")
+                db = getenv("REDIS_SERVICE_DB", "0")
+                broker_url = f"redis://:{password}@{host}:{port}/{db}"
+            else:
+                raise ValueError("Celery broker not configured")
 
-            self._celery_app = Celery(backend=redis_url, broker=redis_url)
+            self._celery_app = Celery(broker=broker_url)
+            self._celery_app.conf.broker_transport_options = bt_options
+            logger.debug(f"Celery uses {broker_url} with {bt_options}")
         return self._celery_app
 
     @staticmethod
@@ -90,9 +101,10 @@ class Consumerino:
         logger.info(f"{message.topic}: {message.body.get('what')}")
         message.body["topic"] = message.topic
         message.body["timestamp"] = datetime.utcnow().timestamp()
-        self.celery_app.send_task(
+        result = self.celery_app.send_task(
             name="task.steve_jobs.process_message", kwargs={"event": message.body}
         )
+        logger.debug(f"Task UUID={result.id} sent to Celery.")
 
     def consume_from_fedora_messaging(self):
         """
