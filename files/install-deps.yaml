@@ -8,6 +8,7 @@
           - python3-celery
           - python3-redis
           - redis # redis-cli
+          - python3-boto3 # AWS SDK
           - python3-click
           - git # setuptools-scm
           - fedora-messaging
@@ -17,5 +18,5 @@
     - name: Install pip deps
       pip:
         name:
-          - sentry-sdk==0.14.0
+          - sentry-sdk
         executable: pip3
