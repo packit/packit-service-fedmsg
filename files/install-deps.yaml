@@ -6,9 +6,10 @@
       dnf:
         name:
           - python3-celery
-          - python3-redis
+          - python3-redis # celery[redis]
           - redis # redis-cli
-          - python3-boto3 # AWS SDK
+          - python3-boto3 # celery[sqs]
+          - python3-pycurl # celery[sqs]
           - python3-click
           - git # setuptools-scm
           - fedora-messaging
