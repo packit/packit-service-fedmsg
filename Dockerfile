@@ -1,12 +1,7 @@
-FROM fedora:31
+FROM docker.io/usercont/base
 
-ENV LANG=en_US.UTF-8 \
-    ANSIBLE_PYTHON_INTERPRETER=/usr/bin/python3 \
-    ANSIBLE_STDOUT_CALLBACK=debug \
-    USER=packit \
+ENV USER=packit \
     HOME=/home/packit
-
-RUN dnf install -y ansible python3-pip
 
 COPY files/install-deps.yaml /src/files/
 RUN cd /src/ \
