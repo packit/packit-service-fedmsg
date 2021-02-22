@@ -1,4 +1,4 @@
-FROM docker.io/usercont/base
+FROM quay.io/packit/base
 
 ENV USER=packit \
     HOME=/home/packit
