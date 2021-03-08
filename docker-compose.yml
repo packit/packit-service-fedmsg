@@ -26,7 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: usercont/packit-service-fedmsg:dev
+    image: quay.io/packit/packit-service-fedmsg:dev
     command: listen-to-fedora-messaging
     environment:
       FEDORA_MESSAGING_CONF: /home/packit/.config/fedora.toml

@@ -1,4 +1,4 @@
-IMAGE ?= docker.io/usercont/packit-service-fedmsg:dev
+IMAGE ?= quay.io/packit/packit-service-fedmsg:dev
 CONTAINER_ENGINE ?= docker
 ANSIBLE_PYTHON ?= /usr/bin/python3
 AP ?= ansible-playbook -vv -c local -i localhost, -e ansible_python_interpreter=$(ANSIBLE_PYTHON)
