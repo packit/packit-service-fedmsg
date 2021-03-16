@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from datetime import datetime
+from functools import reduce
 from logging import getLogger
 from os import getenv
 
@@ -35,6 +36,27 @@ COPR_TOPICS = {
     "org.fedoraproject.prod.copr.build.start",
 }
 KOJI_TOPICS = {"org.fedoraproject.prod.buildsys.task.state.change"}
+
+PUSH_TOPIC = "org.fedoraproject.prod.git.receive"
+
+
+def specfile_changed(body: dict) -> bool:
+    """
+    Does the commit contain specfile change?
+    :param body: message body
+    :return: bool
+    """
+    files = reduce(
+        lambda val, key: val.get(key) if val else None,
+        ["commit", "stats", "files"],
+        body,
+    )
+    file_names = files.keys() if files else []
+
+    for file_name in file_names:
+        if file_name.endswith(".spec"):
+            return True
+    return False
 
 
 class Consumerino:
@@ -96,6 +118,10 @@ class Consumerino:
 
         if message.topic in KOJI_TOPICS and message.body.get("owner") != "packit":
             logger.info("Koji build not built by packit!")
+            return
+
+        if message.topic == PUSH_TOPIC and not specfile_changed(message.body):
+            logger.info("No specfile change, dropping the message.")
             return
 
         logger.info(f"{message.topic}: {message.body.get('what')}")
