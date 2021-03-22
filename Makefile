@@ -2,6 +2,7 @@ IMAGE ?= quay.io/packit/packit-service-fedmsg:dev
 CONTAINER_ENGINE ?= docker
 ANSIBLE_PYTHON ?= /usr/bin/python3
 AP ?= ansible-playbook -vv -c local -i localhost, -e ansible_python_interpreter=$(ANSIBLE_PYTHON)
+TEST_TARGET := ./tests/
 
 build: files/install-deps.yaml files/recipe.yaml
 	$(CONTAINER_ENGINE) build --rm -t $(IMAGE) .
@@ -16,3 +17,7 @@ run:
         -v $(CURDIR)/fedora.toml:/home/packit/.config/fedora.toml \
         --security-opt label=disable \
 		$(IMAGE)
+
+check:
+	find . -name "*.pyc" -exec rm {} \;
+	PYTHONPATH=$(CURDIR) PYTHONDONTWRITEBYTECODE=1 python3 -m pytest --verbose --showlocals  $(TEST_TARGET)
