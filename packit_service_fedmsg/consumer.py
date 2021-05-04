@@ -88,6 +88,8 @@ class Consumerino:
             self._celery_app = Celery(broker=broker_url)
             self._celery_app.conf.broker_transport_options = bt_options
             logger.debug(f"Celery uses {broker_url} with {bt_options}")
+            # https://docs.celeryproject.org/en/latest/userguide/configuration.html#std-setting-task_default_queue
+            self._celery_app.conf.task_default_queue = "short-running"
         return self._celery_app
 
     @staticmethod
