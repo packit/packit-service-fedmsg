@@ -18,11 +18,10 @@ build-test-image: build
 # copy (symlink) fedora.toml from our packit-service@gitlab repo into this dir
 run:
 	$(CONTAINER_ENGINE) run --rm \
-	    --env FEDORA_MESSAGING_CONF=/home/packit/.config/fedora.toml \
-	    --env REDIS_SERVICE_HOST=redis \
-        -v $(CURDIR)/packit_service_fedmsg:/usr/local/lib/python3.7/site-packages/packit_service_fedmsg \
-        -v $(CURDIR)/fedora.toml:/home/packit/.config/fedora.toml \
-        --security-opt label=disable \
+		--env FEDORA_MESSAGING_CONF=/home/packit/.config/fedora.toml \
+		--env REDIS_SERVICE_HOST=redis \
+		-v $(CURDIR)/packit_service_fedmsg:/usr/local/lib/python3.9/site-packages/packit_service_fedmsg:Z \
+		-v $(CURDIR)/fedora.toml:/home/packit/.config/fedora.toml:Z \
 		$(IMAGE)
 
 check:
