@@ -1,0 +1,6 @@
+# Copyright Contributors to the Packit project.
+# SPDX-License-Identifier: MIT
+
+FROM quay.io/packit/packit-service-fedmsg:dev
+
+RUN dnf -y install make findutils python3-pytest && dnf -y clean all
