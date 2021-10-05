@@ -70,24 +70,14 @@ class Consumerino:
     @property
     def celery_app(self):
         if self._celery_app is None:
-            bt_options = {}
-            if getenv("AWS_ACCESS_KEY_ID") and getenv("AWS_SECRET_ACCESS_KEY"):
-                broker_url = "sqs://"
-                if not getenv("QUEUE_NAME_PREFIX"):
-                    raise ValueError("QUEUE_NAME_PREFIX not set")
-                bt_options["queue_name_prefix"] = getenv("QUEUE_NAME_PREFIX")
-            elif getenv("REDIS_SERVICE_HOST"):
-                host = getenv("REDIS_SERVICE_HOST")
-                password = getenv("REDIS_PASSWORD", "")
-                port = getenv("REDIS_SERVICE_PORT", "6379")
-                db = getenv("REDIS_SERVICE_DB", "0")
-                broker_url = f"redis://:{password}@{host}:{port}/{db}"
-            else:
-                raise ValueError("Celery broker not configured")
+            host = getenv("REDIS_SERVICE_HOST", "redis")
+            password = getenv("REDIS_PASSWORD", "")
+            port = getenv("REDIS_SERVICE_PORT", "6379")
+            db = getenv("REDIS_SERVICE_DB", "0")
+            broker_url = f"redis://:{password}@{host}:{port}/{db}"
+            logger.debug(f"Celery uses {broker_url}")
 
             self._celery_app = Celery(broker=broker_url)
-            self._celery_app.conf.broker_transport_options = bt_options
-            logger.debug(f"Celery uses {broker_url} with {bt_options}")
             # https://docs.celeryproject.org/en/latest/userguide/configuration.html#std-setting-task_default_queue
             self._celery_app.conf.task_default_queue = "short-running"
         return self._celery_app
