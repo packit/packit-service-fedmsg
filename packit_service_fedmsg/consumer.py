@@ -17,7 +17,10 @@ COPR_TOPICS = {
     "org.fedoraproject.prod.copr.build.end",
     "org.fedoraproject.prod.copr.build.start",
 }
-KOJI_TOPICS = {"org.fedoraproject.prod.buildsys.task.state.change"}
+KOJI_TOPICS = {
+    "org.fedoraproject.prod.buildsys.task.state.change",
+    "org.fedoraproject.prod.buildsys.build.state.change",
+}
 
 PUSH_TOPIC = "org.fedoraproject.prod.git.receive"
 
@@ -90,6 +93,8 @@ class Consumerino:
             logger.info("Copr build not built by packit!")
             return
 
+        # TODO: accept builds run by other owners as well
+        #  (For the `bodhi_update` job.)
         if message.topic in KOJI_TOPICS and message.body.get("owner") != "packit":
             logger.info("Koji build not built by packit!")
             return
