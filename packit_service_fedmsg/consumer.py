@@ -5,6 +5,7 @@ from datetime import datetime
 from functools import reduce
 from logging import getLogger
 from os import getenv
+from typing import Any
 
 from celery import Celery
 from fedora_messaging import api, config
@@ -24,6 +25,31 @@ KOJI_TOPICS = {
 
 PUSH_TOPIC = "org.fedoraproject.prod.git.receive"
 
+PAGURE_TOPIC = {
+    "org.fedoraproject.prod.pagure.pull-request.flag.added",
+    "org.fedoraproject.prod.pagure.pull-request.flag.updated",
+}
+
+
+def nested_get(d: dict, *keys, default=None) -> Any:
+    """
+    recursively obtain value from nested dict
+
+    :param d: dictionary
+    :param keys: path within the structure
+    :param default: a value to return by default
+
+    :return: value or None
+    """
+    response = d
+    for k in keys:
+        try:
+            response = response[k]
+        except (KeyError, AttributeError, TypeError):
+            # logger.debug("can't obtain %s: %s", k, ex)
+            return default
+    return response
+
 
 def specfile_changed(body: dict) -> bool:
     """
@@ -38,10 +64,7 @@ def specfile_changed(body: dict) -> bool:
     )
     file_names = files.keys() if files else []
 
-    for file_name in file_names:
-        if file_name.endswith(".spec"):
-            return True
-    return False
+    return any(file_name.endswith(".spec") for file_name in file_names)
 
 
 class Consumerino:
@@ -101,6 +124,13 @@ class Consumerino:
 
         if message.topic == PUSH_TOPIC and not specfile_changed(message.body):
             logger.info("No specfile change, dropping the message.")
+            return
+
+        if (
+            message.topic in PAGURE_TOPIC
+            and nested_get(message.body, "pullrequest", "user", "name") != "packit"
+        ):
+            logger.info("Flag added/changed in a PR not created by packit")
             return
 
         logger.info(f"{message.topic}: {message.body.get('what')}")
