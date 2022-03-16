@@ -38,5 +38,5 @@ repos:
     hooks:
       - id: check-rebase
         args:
-          - git://github.com/packit/packit-service-fedmsg.git
+          - https://github.com/packit/packit-service-fedmsg.git
         stages: [manual, push]
