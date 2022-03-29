@@ -111,35 +111,56 @@ class Consumerino:
         :param message: Message from Fedora message bus
         :return: None
         """
+        event = message.body
+        topic = message.topic
+        what = ""
 
-        if message.topic in COPR_TOPICS and message.body.get("user") != "packit":
-            logger.info("Copr build not built by packit!")
-            return
+        if topic in COPR_TOPICS:
+            if event.get("user") != "packit":
+                logger.info("Copr build not built by packit!")
+                return
+            what = event.get("what")
 
         # TODO: accept builds run by other owners as well
         #  (For the `bodhi_update` job.)
-        if message.topic in KOJI_TOPICS and message.body.get("owner") != "packit":
-            logger.info("Koji build not built by packit!")
-            return
+        elif topic in KOJI_TOPICS:
+            if event.get("owner") != "packit":
+                logger.info("Koji build not built by packit!")
+                return
+            if "buildsys.build.state" in topic:
+                what = (
+                    f"build:{event.get('build_id')} task:{event.get('task_id')}"
+                    f" {event.get('old')}->{event.get('new')}"
+                )
+            if "buildsys.task.state" in topic:  # scratch build
+                what = f"id:{event.get('id')} {event.get('old')}->{event.get('new')}"
 
-        if message.topic == PUSH_TOPIC and not specfile_changed(message.body):
-            logger.info("No specfile change, dropping the message.")
-            return
+        elif topic == PUSH_TOPIC:
+            if not specfile_changed(event):
+                logger.info("No specfile change, dropping the message.")
+                return
+            if commit := event.get("commit"):
+                what = (
+                    f"{commit.get('repo')} {commit.get('branch')} {commit.get('rev')}"
+                )
 
-        if (
-            message.topic in PAGURE_TOPIC
-            and nested_get(message.body, "pullrequest", "user", "name") != "packit"
-        ):
-            logger.info("Flag added/changed in a PR not created by packit")
-            return
+        elif topic in PAGURE_TOPIC:
+            if nested_get(event, "pullrequest", "user", "name") != "packit":
+                logger.info("Flag added/changed in a PR not created by packit")
+                return
+            what = (
+                f"{nested_get(event, 'pullrequest', 'project', 'fullname')}"
+                f" '{nested_get(event, 'flag', 'comment')}'"
+            )
 
-        logger.info(f"{message.topic}: {message.body.get('what')}")
-        message.body["topic"] = message.topic
-        message.body["timestamp"] = datetime.utcnow().timestamp()
+        if what:
+            logger.info(what)
+        event["topic"] = topic
+        event["timestamp"] = datetime.utcnow().timestamp()
         result = self.celery_app.send_task(
-            name="task.steve_jobs.process_message", kwargs={"event": message.body}
+            name="task.steve_jobs.process_message", kwargs={"event": event}
         )
-        logger.debug(f"Task UUID={result.id} sent to Celery.")
+        logger.debug(f"Task UUID={result.id} sent to Celery")
 
     def consume_from_fedora_messaging(self):
         """
