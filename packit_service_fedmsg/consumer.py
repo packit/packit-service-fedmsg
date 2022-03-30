@@ -74,6 +74,10 @@ class Consumerino:
 
     def __init__(self):
         self._celery_app = None
+        self.environment = getenv("DEPLOYMENT")
+        self.packit_user = {"prod": "packit", "stg": "packit-stg"}.get(
+            self.environment, "packit"
+        )
 
     @property
     def celery_app(self):
@@ -116,6 +120,7 @@ class Consumerino:
         what = ""
 
         if topic in COPR_TOPICS:
+            # TODO: create a new Copr identity for Packit stage instance
             if event.get("user") != "packit":
                 logger.info("Copr build not built by packit!")
                 return
@@ -124,8 +129,8 @@ class Consumerino:
         # TODO: accept builds run by other owners as well
         #  (For the `bodhi_update` job.)
         elif topic in KOJI_TOPICS:
-            if event.get("owner") != "packit":
-                logger.info("Koji build not built by packit!")
+            if event.get("owner") != self.packit_user:
+                logger.info(f"Koji build not built by {self.packit_user}!")
                 return
             if "buildsys.build.state" in topic:
                 what = (
@@ -145,8 +150,10 @@ class Consumerino:
                 )
 
         elif topic in PAGURE_TOPIC:
-            if nested_get(event, "pullrequest", "user", "name") != "packit":
-                logger.info("Flag added/changed in a PR not created by packit")
+            if nested_get(event, "pullrequest", "user", "name") != self.packit_user:
+                logger.info(
+                    f"Flag added/changed in a PR not created by {self.packit_user}"
+                )
                 return
             what = (
                 f"{nested_get(event, 'pullrequest', 'project', 'fullname')}"
