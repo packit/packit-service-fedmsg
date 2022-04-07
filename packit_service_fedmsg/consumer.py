@@ -120,9 +120,8 @@ class Consumerino:
         what = ""
 
         if topic in COPR_TOPICS:
-            # TODO: create a new Copr identity for Packit stage instance
-            if event.get("user") != "packit":
-                logger.info("Copr build not built by packit!")
+            if event.get("user") != self.packit_user:
+                logger.info(f"Copr build not built by {self.packit_user}!")
                 return
             what = event.get("what")
 
