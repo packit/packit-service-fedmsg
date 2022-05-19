@@ -23,9 +23,10 @@ KOJI_TOPICS = {
     "org.fedoraproject.prod.buildsys.build.state.change",
 }
 
-PUSH_TOPIC = "org.fedoraproject.prod.git.receive"
+DISTGIT_PUSH_TOPIC = "org.fedoraproject.prod.git.receive"
+DISTGIT_PR_CLOSED_TOPIC = "org.fedoraproject.prod.pagure.pull-request.closed"
 
-PAGURE_TOPIC = {
+DISTGIT_PR_FLAG_TOPIC = {
     "org.fedoraproject.prod.pagure.pull-request.flag.added",
     "org.fedoraproject.prod.pagure.pull-request.flag.updated",
 }
@@ -139,7 +140,7 @@ class Consumerino:
             if "buildsys.task.state" in topic:  # scratch build
                 what = f"id:{event.get('id')} {event.get('old')}->{event.get('new')}"
 
-        elif topic == PUSH_TOPIC:
+        elif topic == DISTGIT_PUSH_TOPIC:
             if not specfile_changed(event):
                 logger.info("No specfile change, dropping the message.")
                 return
@@ -148,7 +149,7 @@ class Consumerino:
                     f"{commit.get('repo')} {commit.get('branch')} {commit.get('rev')}"
                 )
 
-        elif topic in PAGURE_TOPIC:
+        elif topic in DISTGIT_PR_FLAG_TOPIC:
             if nested_get(event, "pullrequest", "user", "name") != self.packit_user:
                 logger.info(
                     f"Flag added/changed in a PR not created by {self.packit_user}"
@@ -157,6 +158,16 @@ class Consumerino:
             what = (
                 f"{nested_get(event, 'pullrequest', 'project', 'fullname')}"
                 f" '{nested_get(event, 'flag', 'comment')}'"
+            )
+
+        elif topic in DISTGIT_PR_CLOSED_TOPIC:
+            if not nested_get(event, "pullrequest", "merged"):
+                logger.info("Pull request was not merged.")
+                return
+            what = (
+                f"{nested_get(event, 'pullrequest', 'project', 'fullname')}:"
+                f" PR {nested_get(event, 'pullrequest', 'id')} "
+                f"merged to {nested_get(event, 'pullrequest', 'branch')}"
             )
 
         if what:
