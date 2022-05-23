@@ -160,7 +160,7 @@ class Consumerino:
                 f" '{nested_get(event, 'flag', 'comment')}'"
             )
 
-        elif topic in DISTGIT_PR_CLOSED_TOPIC:
+        elif topic == DISTGIT_PR_CLOSED_TOPIC:
             if not nested_get(event, "pullrequest", "merged"):
                 logger.info("Pull request was not merged.")
                 return
