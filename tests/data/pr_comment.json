@@ -1,0 +1,191 @@
+{
+  "body": {
+    "agent": "mmassari",
+    "pullrequest": {
+      "assignee": null,
+      "branch": "packit-src-git",
+      "branch_from": "1.31-packit-src-git-src-2",
+      "cached_merge_status": "FFORWARD",
+      "closed_at": null,
+      "closed_by": null,
+      "comments": [
+        {
+          "comment": "rebased onto 66ddb1a866d6acffb78b2adef9aabfa5e45b495d",
+          "commit": null,
+          "date_created": "1653295381",
+          "edited_on": null,
+          "editor": null,
+          "filename": null,
+          "id": 106021,
+          "line": null,
+          "notification": true,
+          "parent": null,
+          "reactions": {},
+          "tree": null,
+          "user": {
+            "full_url": "https://src.fedoraproject.org/user/packit",
+            "fullname": "Packit Bot",
+            "name": "packit",
+            "url_path": "user/packit"
+          }
+        },
+        {
+          "comment": "/packit koji-build",
+          "commit": null,
+          "date_created": "1657280218",
+          "edited_on": null,
+          "editor": null,
+          "filename": null,
+          "id": 109953,
+          "line": null,
+          "notification": false,
+          "parent": null,
+          "reactions": {},
+          "tree": null,
+          "user": {
+            "full_url": "https://src.fedoraproject.org/user/mmassari",
+            "fullname": "Maja Massarini",
+            "name": "mmassari",
+            "url_path": "user/mmassari"
+          }
+        }
+      ],
+      "commit_start": "66ddb1a866d6acffb78b2adef9aabfa5e45b495d",
+      "commit_stop": "66ddb1a866d6acffb78b2adef9aabfa5e45b495d",
+      "date_created": "1652949151",
+      "full_url": "https://src.fedoraproject.org/rpms/python-teamcity-messages/pull-request/31",
+      "id": 31,
+      "initial_comment": "---\n###### Info for package maintainer\nThis MR has been automatically created from\n[this source-git MR](https://gitlab.com/fedora/src/python-teamcity-messages/-/merge_requests/2).",
+      "last_updated": "1657280219",
+      "project": {
+        "access_groups": {
+          "admin": [],
+          "collaborator": [],
+          "commit": [],
+          "ticket": []
+        },
+        "access_users": {
+          "admin": ["limb"],
+          "collaborator": [],
+          "commit": [],
+          "owner": ["mmassari"],
+          "ticket": []
+        },
+        "close_status": [],
+        "custom_keys": [],
+        "date_created": "1643654065",
+        "date_modified": "1650542166",
+        "description": "The python-teamcity-messages package\n",
+        "full_url": "https://src.fedoraproject.org/rpms/python-teamcity-messages",
+        "fullname": "rpms/python-teamcity-messages",
+        "id": 54766,
+        "milestones": {},
+        "name": "python-teamcity-messages",
+        "namespace": "rpms",
+        "parent": null,
+        "priorities": {},
+        "tags": [],
+        "url_path": "rpms/python-teamcity-messages",
+        "user": {
+          "full_url": "https://src.fedoraproject.org/user/mmassari",
+          "fullname": "Maja Massarini",
+          "name": "mmassari",
+          "url_path": "user/mmassari"
+        }
+      },
+      "remote_git": null,
+      "repo_from": {
+        "access_groups": {
+          "admin": [],
+          "collaborator": [],
+          "commit": [],
+          "ticket": []
+        },
+        "access_users": {
+          "admin": [],
+          "collaborator": [],
+          "commit": [],
+          "owner": ["packit"],
+          "ticket": []
+        },
+        "close_status": [],
+        "custom_keys": [],
+        "date_created": "1646215706",
+        "date_modified": "1646215706",
+        "description": "The python-teamcity-messages package\n",
+        "full_url": "https://src.fedoraproject.org/fork/packit/rpms/python-teamcity-messages",
+        "fullname": "forks/packit/rpms/python-teamcity-messages",
+        "id": 55422,
+        "milestones": {},
+        "name": "python-teamcity-messages",
+        "namespace": "rpms",
+        "parent": {
+          "access_groups": {
+            "admin": [],
+            "collaborator": [],
+            "commit": [],
+            "ticket": []
+          },
+          "access_users": {
+            "admin": ["limb"],
+            "collaborator": [],
+            "commit": [],
+            "owner": ["mmassari"],
+            "ticket": []
+          },
+          "close_status": [],
+          "custom_keys": [],
+          "date_created": "1643654065",
+          "date_modified": "1650542166",
+          "description": "The python-teamcity-messages package\n",
+          "full_url": "https://src.fedoraproject.org/rpms/python-teamcity-messages",
+          "fullname": "rpms/python-teamcity-messages",
+          "id": 54766,
+          "milestones": {},
+          "name": "python-teamcity-messages",
+          "namespace": "rpms",
+          "parent": null,
+          "priorities": {},
+          "tags": [],
+          "url_path": "rpms/python-teamcity-messages",
+          "user": {
+            "full_url": "https://src.fedoraproject.org/user/mmassari",
+            "fullname": "Maja Massarini",
+            "name": "mmassari",
+            "url_path": "user/mmassari"
+          }
+        },
+        "priorities": {},
+        "tags": [],
+        "url_path": "fork/packit/rpms/python-teamcity-messages",
+        "user": {
+          "full_url": "https://src.fedoraproject.org/user/packit",
+          "fullname": "Packit Bot",
+          "name": "packit",
+          "url_path": "user/packit"
+        }
+      },
+      "status": "Open",
+      "tags": [],
+      "threshold_reached": null,
+      "title": "Version 1.31",
+      "uid": "7b2b41f05e3b41abaefc7ed91f880898",
+      "updated_on": "1657280218",
+      "user": {
+        "full_url": "https://src.fedoraproject.org/user/packit",
+        "fullname": "Packit Bot",
+        "name": "packit",
+        "url_path": "user/packit"
+      }
+    }
+  },
+  "headers": {
+    "fedora_messaging_schema": "pagure.pull-request.comment.added",
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_mmassari": true,
+    "sent-at": "2022-07-08T11:37:07+00:00"
+  },
+  "id": "6a1973ae-a0ab-4e5a-8e90-34eea619a5d9",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.pagure.pull-request.comment.added"
+}
