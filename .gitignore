@@ -2,7 +2,9 @@
 secrets/
 
 .idea/
+.vscode/
 .eggs/
 .coverage
 *.egg-info
 .mypy_cache/
+build/

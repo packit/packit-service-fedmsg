@@ -31,6 +31,8 @@ DISTGIT_PR_FLAG_TOPIC = {
     "org.fedoraproject.prod.pagure.pull-request.flag.updated",
 }
 
+DISTGIT_PR_COMMENT_ADDED = "org.fedoraproject.prod.pagure.pull-request.comment.added"
+
 
 def nested_get(d: dict, *keys, default=None) -> Any:
     """
@@ -164,10 +166,14 @@ class Consumerino:
             if not nested_get(event, "pullrequest", "merged"):
                 logger.info("Pull request was not merged.")
                 return
+
+        elif topic == DISTGIT_PR_COMMENT_ADDED:
+            comments = nested_get(event, "pullrequest", "comments")
+            last_comment = comments[-1]
             what = (
-                f"{nested_get(event, 'pullrequest', 'project', 'fullname')}:"
-                f" PR {nested_get(event, 'pullrequest', 'id')} "
-                f"merged to {nested_get(event, 'pullrequest', 'branch')}"
+                f" For {nested_get(event, 'pullrequest', 'project', 'fullname')}"
+                f" new comment: '{last_comment['comment']}'"
+                f" from {last_comment['user']['name']}"
             )
 
         if what:
