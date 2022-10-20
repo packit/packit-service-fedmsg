@@ -14,6 +14,9 @@ from fedora_messaging.message import Message
 config.conf.setup_logging()
 logger = getLogger(__name__)
 
+# !!! When new topics are added/removed here, then they must be added/removed also in a
+# respective fedora.toml.j2 (https://github.com/packit/deployment/tree/main/secrets) !!!
+
 COPR_TOPICS = {
     "org.fedoraproject.prod.copr.build.end",
     "org.fedoraproject.prod.copr.build.start",
