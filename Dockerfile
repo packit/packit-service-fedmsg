@@ -17,4 +17,4 @@ RUN cd /src/ \
     && ansible-playbook -vv -c local -i localhost, recipe.yaml \
     && rm -rf /src/
 
-CMD ["listen-to-fedora-messaging"]
+CMD ["fedora-messaging", "consume", "--callback=packit_service_fedmsg.consumer:Consumerino"]
