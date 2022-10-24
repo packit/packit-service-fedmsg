@@ -8,11 +8,14 @@ from os import getenv
 from typing import Any
 
 from celery import Celery
-from fedora_messaging import api, config
+from fedora_messaging import config
 from fedora_messaging.message import Message
 
 config.conf.setup_logging()
 logger = getLogger(__name__)
+
+# !!! When new topics are added/removed here, then they must be added/removed also in a
+# respective fedora.toml.j2 (https://github.com/packit/deployment/tree/main/secrets) !!!
 
 COPR_TOPICS = {
     "org.fedoraproject.prod.copr.build.end",
@@ -82,6 +85,8 @@ class Consumerino:
             self.environment, "packit"
         )
 
+        self.configure_sentry()
+
     @property
     def celery_app(self):
         if self._celery_app is None:
@@ -93,7 +98,7 @@ class Consumerino:
             logger.debug(f"Celery uses {broker_url}")
 
             self._celery_app = Celery(broker=broker_url)
-            # https://docs.celeryproject.org/en/latest/userguide/configuration.html#std-setting-task_default_queue
+            # https://docs.celeryq.dev/en/latest/userguide/configuration.html#std-setting-task_default_queue
             self._celery_app.conf.task_default_queue = "short-running"
         return self._celery_app
 
@@ -106,14 +111,15 @@ class Consumerino:
         import sentry_sdk
 
         # with the use of default integrations
-        # https://docs.sentry.io/platforms/python/default-integrations/
+        # https://docs.sentry.io/platforms/python/configuration/integrations/default-integrations/
         sentry_sdk.init(secret_key, environment=getenv("DEPLOYMENT"))
 
         with sentry_sdk.configure_scope() as scope:
             scope.set_tag("runner-type", "packit-service-fedmsg")
 
-    def fedora_messaging_callback(self, message: Message):
+    def __call__(self, message: Message):
         """
+        Invoked when a message is received by the consumer.
         Create celery task from fedora message
         :param message: Message from Fedora message bus
         :return: None
@@ -184,14 +190,3 @@ class Consumerino:
             name="task.steve_jobs.process_message", kwargs={"event": event}
         )
         logger.debug(f"Task UUID={result.id} sent to Celery")
-
-    def consume_from_fedora_messaging(self):
-        """
-        fedora-messaging is written in an async way: callbacks
-        """
-        # Start consuming messages using our callback. This call will block until
-        # a KeyboardInterrupt is raised, or the process receives a SIGINT or SIGTERM
-        # signal.
-
-        self.configure_sentry()
-        api.consume(self.fedora_messaging_callback)

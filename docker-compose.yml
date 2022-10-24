@@ -2,16 +2,16 @@ version: "2"
 
 services:
   redis:
-    image: registry.fedoraproject.org/f31/redis
+    image: quay.io/centos7/redis-5-centos7
     container_name: redis
     ports:
       - 6379:6379
-    user: "123123"
+    user: "1024"
 
   redis-commander:
     container_name: redis-commander
     hostname: redis-commander
-    image: rediscommander/redis-commander:latest
+    image: docker.io/rediscommander/redis-commander
     environment:
       REDIS_HOST: redis
       REDIS_PORT: "6379"
@@ -19,7 +19,7 @@ services:
       - 8081:8081
     depends_on:
       - redis
-    user: "123123"
+    user: "1024"
 
   fedmsg:
     container_name: fedmsg
@@ -27,11 +27,12 @@ services:
       context: .
       dockerfile: Dockerfile
     image: quay.io/packit/packit-service-fedmsg:dev
-    command: listen-to-fedora-messaging
+    depends_on:
+      - redis
     environment:
       FEDORA_MESSAGING_CONF: /home/packit/.config/fedora.toml
     volumes:
-      - ./packit_service_fedmsg:/usr/local/lib/python3.7/site-packages/packit_service_fedmsg:ro,z
+      - ./packit_service_fedmsg:/usr/local/lib/python3.10/site-packages/packit_service_fedmsg:ro,Z
       # get it from secrets
-      - ./fedora.toml:/home/packit/.config/fedora.toml:ro,z
-    user: "123123"
+      - ./fedora.toml:/home/packit/.config/fedora.toml:ro,Z
+    user: "1024"
