@@ -3,4 +3,4 @@
 
 FROM quay.io/packit/packit-service-fedmsg:dev
 
-RUN dnf -y install make findutils python3-pytest && dnf -y clean all
+RUN dnf -y install make findutils python3-pytest python3-flexmock && dnf -y clean all
