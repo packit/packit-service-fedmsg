@@ -1,6 +1,3 @@
-# Copyright Contributors to the Packit project.
-# SPDX-License-Identifier: MIT
-
 import json
 
 from celery import Celery
@@ -12,7 +9,7 @@ from tests.spellbook import DATA_DIR
 
 def test_pr_comment():
     flexmock(Celery).should_receive("send_task").and_return(flexmock(id="a")).once()
-    with open(DATA_DIR / "pr_comment.json") as outfile:
+    with open(DATA_DIR / "new_hotness_update.json") as outfile:
         json_msg = json.load(outfile)
         msg = message.loads(json.dumps(json_msg))
         c = Consumerino()

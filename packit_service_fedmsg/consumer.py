@@ -34,6 +34,8 @@ DISTGIT_PR_FLAG_TOPIC = {
     "org.fedoraproject.prod.pagure.pull-request.flag.updated",
 }
 
+NEW_HOTNESS_TOPIC = "org.fedoraproject.prod.hotness.update.bug.file"
+
 DISTGIT_PR_COMMENT_ADDED = "org.fedoraproject.prod.pagure.pull-request.comment.added"
 
 
@@ -182,8 +184,15 @@ class Consumerino:
                 f" from {last_comment['user']['name']}"
             )
 
+        elif topic == NEW_HOTNESS_TOPIC:
+            package = event.get("package")
+            version = nested_get(event, "trigger", "msg", "project", "version")
+
+            what = f" New hotness update: version {version} of package {package}."
+
         if what:
             logger.info(what)
+
         event["topic"] = topic
         event["timestamp"] = datetime.utcnow().timestamp()
         result = self.celery_app.send_task(
