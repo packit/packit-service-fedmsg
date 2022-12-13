@@ -1,7 +1,7 @@
 # Copyright Contributors to the Packit project.
 # SPDX-License-Identifier: MIT
 
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import reduce
 from logging import getLogger
 from os import getenv
@@ -194,7 +194,7 @@ class Consumerino:
             logger.info(what)
 
         event["topic"] = topic
-        event["timestamp"] = datetime.utcnow().timestamp()
+        event["timestamp"] = datetime.now(timezone.utc).timestamp()
         result = self.celery_app.send_task(
             name="task.steve_jobs.process_message", kwargs={"event": event}
         )
