@@ -32,7 +32,7 @@ services:
     environment:
       FEDORA_MESSAGING_CONF: /home/packit/.config/fedora.toml
     volumes:
-      - ./packit_service_fedmsg:/usr/local/lib/python3.10/site-packages/packit_service_fedmsg:ro,Z
-      # get it from secrets
+      - ./packit_service_fedmsg:/usr/local/lib/python3.11/site-packages/packit_service_fedmsg:ro,Z
+      # get it from deployment/secrets
       - ./fedora.toml:/home/packit/.config/fedora.toml:ro,Z
     user: "1024"
