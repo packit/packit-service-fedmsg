@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from functools import reduce
 from logging import getLogger
 from os import getenv
+from pathlib import Path
 from typing import Any
 
 from celery import Celery
@@ -129,6 +130,8 @@ class Consumerino:
         event = message.body
         topic = message.topic
         what = ""
+
+        Path(getenv("LIVENESS_FILE", "/tmp/liveness")).touch(exist_ok=True)
 
         if topic in COPR_TOPICS:
             if event.get("user") != self.packit_user:

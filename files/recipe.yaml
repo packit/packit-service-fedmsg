@@ -13,6 +13,11 @@
       ansible.builtin.pip:
         name: /src
         executable: pip3
+    - name: Install liveness script
+      copy:
+        src: /src/liveness.sh
+        dest: /usr/bin/liveness.sh
+        mode: 0777
     - name: Clean all the cache files (especially pip)
       ansible.builtin.file:
         state: absent
