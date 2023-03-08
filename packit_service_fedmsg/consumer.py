@@ -154,7 +154,9 @@ class Consumerino:
                 what = f"id:{event.get('id')} {event.get('old')}->{event.get('new')}"
 
         elif topic == DISTGIT_PUSH_TOPIC:
-            if not specfile_changed(event):
+            if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
+                event
+            ):
                 logger.info("No specfile change, dropping the message.")
                 return
             if commit := event.get("commit"):
