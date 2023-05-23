@@ -1,4 +1,4 @@
-FROM quay.io/packit/base
+FROM quay.io/packit/base:c9s
 
 ENV USER=packit \
     HOME=/home/packit

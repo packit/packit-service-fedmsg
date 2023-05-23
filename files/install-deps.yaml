@@ -5,17 +5,15 @@
     - name: Install all RPM/python packages needed to run fedora messaging consumer.
       ansible.builtin.dnf:
         name:
-          - python3-celery
-          - python3-redis # celery[redis]
-          - redis # redis-cli
           - python3-click
           - git # setuptools-scm
           - fedora-messaging
-          - python3-copr-messaging # json schemas
         state: present
 
     - name: Install pip deps
       ansible.builtin.pip:
         name:
+          - copr-messaging # json schemas, RPM not in c9s yet (RHBZ#2203725)
+          - celery[redis] # RPM not in c9s yet (RHBZ#2032543)
           - sentry-sdk
         executable: pip3
