@@ -200,7 +200,13 @@ class Consumerino:
 
         event["topic"] = topic
         event["timestamp"] = datetime.now(timezone.utc).timestamp()
+
         result = self.celery_app.send_task(
-            name="task.steve_jobs.process_message", kwargs={"event": event}
+            name="task.steve_jobs.process_message",
+            kwargs={
+                "event": event,
+                "source": "fedora-messaging",
+                "event_type": topic.removeprefix("org.fedoraproject.prod."),
+            },
         )
         logger.debug(f"Task UUID={result.id} sent to Celery")
