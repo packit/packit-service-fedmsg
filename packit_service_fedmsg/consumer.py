@@ -98,7 +98,7 @@ class Consumerino:
             port = getenv("REDIS_SERVICE_PORT", "6379")
             db = getenv("REDIS_SERVICE_DB", "0")
             broker_url = f"redis://:{password}@{host}:{port}/{db}"
-            logger.debug(f"Celery uses {broker_url}")
+            logger.debug(f"Celery uses redis @ {host}:{port}/{db}")
 
             self._celery_app = Celery(broker=broker_url)
             # https://docs.celeryq.dev/en/latest/userguide/configuration.html#std-setting-task_default_queue
