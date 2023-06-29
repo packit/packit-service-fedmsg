@@ -2,7 +2,7 @@ version: "2"
 
 services:
   redis:
-    image: quay.io/centos7/redis-5-centos7
+    image: quay.io/sclorg/redis-6-c9s
     container_name: redis
     ports:
       - 6379:6379
@@ -32,7 +32,7 @@ services:
     environment:
       FEDORA_MESSAGING_CONF: /home/packit/.config/fedora.toml
     volumes:
-      - ./packit_service_fedmsg:/usr/local/lib/python3.11/site-packages/packit_service_fedmsg:ro,Z
+      - ./packit_service_fedmsg:/usr/local/lib/python3.9/site-packages/packit_service_fedmsg:ro,Z
       # get it from deployment/secrets
       - ./fedora.toml:/home/packit/.config/fedora.toml:ro,Z
     user: "1024"
