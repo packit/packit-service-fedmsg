@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 from datetime import datetime, timezone
+from functools import cached_property
 from logging import getLogger
 from os import getenv
 from pathlib import Path
@@ -31,19 +32,19 @@ class Consumerino:
 
         self.configure_sentry()
 
-    @property
+    @cached_property
     def celery_app(self):
-        if self._celery_app is None:
-            host = getenv("REDIS_SERVICE_HOST", "redis")
-            password = getenv("REDIS_PASSWORD", "")
-            port = getenv("REDIS_SERVICE_PORT", "6379")
-            db = getenv("REDIS_SERVICE_DB", "0")
-            broker_url = f"redis://:{password}@{host}:{port}/{db}"
-            logger.debug(f"Celery uses redis @ {host}:{port}/{db}")
+        host = getenv("REDIS_SERVICE_HOST", "redis")
+        password = getenv("REDIS_PASSWORD", "")
+        port = getenv("REDIS_SERVICE_PORT", "6379")
+        db = getenv("REDIS_SERVICE_DB", "0")
+        broker_url = f"redis://:{password}@{host}:{port}/{db}"
+        logger.debug(f"Celery uses redis @ {host}:{port}/{db}")
 
-            self._celery_app = Celery(broker=broker_url)
-            # https://docs.celeryq.dev/en/latest/userguide/configuration.html#std-setting-task_default_queue
-            self._celery_app.conf.task_default_queue = "short-running"
+        _celery_app = Celery(broker=broker_url)
+        # https://docs.celeryq.dev/en/latest/userguide/configuration.html#std-setting-task_default_queue
+        _celery_app.conf.task_default_queue = "short-running"
+
         return self._celery_app
 
     @staticmethod
