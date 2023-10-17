@@ -42,13 +42,17 @@ DISTGIT_PR_COMMENT_ADDED = "org.fedoraproject.prod.pagure.pull-request.comment.a
 
 def nested_get(d: dict, *keys, default=None) -> Any:
     """
-    recursively obtain value from nested dict
+    Recursively obtain value from nested dict.
 
-    :param d: dictionary
-    :param keys: path within the structure
-    :param default: a value to return by default
+    Args:
+        d: Dictionary to get value from.
+        keys: Path within the dictionary.
+        default: Value to be returned if some key is not found.
 
-    :return: value or None
+            Defaults to `None`.
+
+    Returns:
+        Value found in the dictionary or specified default.
     """
     response = d
 
@@ -65,8 +69,12 @@ def nested_get(d: dict, *keys, default=None) -> Any:
 def specfile_changed(body: dict) -> bool:
     """
     Does the commit contain specfile change?
-    :param body: message body
-    :return: bool
+
+    Args:
+        body: Body of the message.
+
+    Returns:
+        `True` if the specfile has changed, `False` otherwise.
     """
     files = reduce(
         lambda val, key: val.get(key) if val else None,
@@ -80,7 +88,7 @@ def specfile_changed(body: dict) -> bool:
 
 class Consumerino:
     """
-    Consume events from fedora messaging
+    Consumer of events from Fedora Messaging.
     """
 
     def __init__(self):
@@ -126,9 +134,10 @@ class Consumerino:
     def __call__(self, message: Message):
         """
         Invoked when a message is received by the consumer.
-        Create celery task from fedora message
-        :param message: Message from Fedora message bus
-        :return: None
+        Create Celery task from Fedora Messaging.
+
+        Args:
+            message: Message from the Fedora Messaging bus.
         """
         event = message.body
         topic = message.topic
