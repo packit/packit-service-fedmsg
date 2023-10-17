@@ -21,12 +21,6 @@ repos:
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: trailing-whitespace
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        args:
-          - --max-line-length=100
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.5.1
     hooks:
@@ -40,3 +34,9 @@ repos:
         args:
           - https://github.com/packit/packit-service-fedmsg.git
         stages: [manual, push]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.0.291
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]

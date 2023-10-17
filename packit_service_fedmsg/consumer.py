@@ -51,12 +51,14 @@ def nested_get(d: dict, *keys, default=None) -> Any:
     :return: value or None
     """
     response = d
-    for k in keys:
-        try:
+
+    try:
+        for k in keys:
             response = response[k]
-        except (KeyError, AttributeError, TypeError):
-            # logger.debug("can't obtain %s: %s", k, ex)
-            return default
+    except (KeyError, AttributeError, TypeError):
+        # logger.debug("can't obtain %s: %s", k, ex)
+        return default
+
     return response
 
 
@@ -85,7 +87,8 @@ class Consumerino:
         self._celery_app = None
         self.environment = getenv("DEPLOYMENT")
         self.packit_user = {"prod": "packit", "stg": "packit-stg"}.get(
-            self.environment, "packit"
+            self.environment,
+            "packit",
         )
 
         self.configure_sentry()
@@ -155,7 +158,7 @@ class Consumerino:
 
         elif topic == DISTGIT_PUSH_TOPIC:
             if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
-                event
+                event,
             ):
                 logger.info("No specfile change, dropping the message.")
                 return
@@ -167,7 +170,7 @@ class Consumerino:
         elif topic in DISTGIT_PR_FLAG_TOPIC:
             if nested_get(event, "pullrequest", "user", "name") != self.packit_user:
                 logger.info(
-                    f"Flag added/changed in a PR not created by {self.packit_user}"
+                    f"Flag added/changed in a PR not created by {self.packit_user}",
                 )
                 return
             what = (
