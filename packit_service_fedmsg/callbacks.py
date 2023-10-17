@@ -140,7 +140,23 @@ def _hotness_bugzilla(topic: str, event: dict, packit_user: str) -> CallbackResu
 
 
 def _anitya_version_update(topic: str, event: dict, packit_user: str) -> CallbackResult:
-    pass
+    package = None
+    for p in nested_get(event, "message", "packages"):
+        if p.get("distro") == "CentOS":
+            package = p.get("package_name")
+            break
+
+    if package is None:
+        return CallbackResult(
+            msg=f"[Anitya] CentOS mapping is not configured for {package}, ignoring.",
+            pass_to_service=False,
+        )
+
+    new_versions = nested_get(event, "message", "project", "upstream_versions")
+
+    return CallbackResult(
+        msg=f"[Anitya] New versions of package {package}: '{', '.join(new_versions)}'",
+    )
 
 
 # [WARNING]
