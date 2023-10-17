@@ -147,8 +147,9 @@ def _anitya_version_update(topic: str, event: dict, packit_user: str) -> Callbac
             break
 
     if package is None:
+        project = nested_get(event, "project", "name")
         return CallbackResult(
-            msg=f"[Anitya] CentOS mapping is not configured for {package}, ignoring.",
+            msg=f"[Anitya] CentOS mapping is not configured for {project}, ignoring.",
             pass_to_service=False,
         )
 
