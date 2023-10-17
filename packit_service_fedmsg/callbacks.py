@@ -161,7 +161,7 @@ def _anitya_version_update(topic: str, event: dict, packit_user: str) -> Callbac
 
 
 # [WARNING]
-# When new topics are changed here, then the changes must be also reflected in
+# Configuration of the topics to listen to needs to be changed in
 # a respective fedora.toml.j2 (https://github.com/packit/deployment/tree/main/secrets)
 MAPPING = {
     "org.fedoraproject.prod.copr.build.end": _copr,
