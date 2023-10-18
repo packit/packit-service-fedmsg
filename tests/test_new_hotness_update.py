@@ -1,8 +1,9 @@
 import json
 
 from celery import Celery
-from flexmock import flexmock
 from fedora_messaging import message
+from flexmock import flexmock
+
 from packit_service_fedmsg.consumer import Consumerino
 from tests.spellbook import DATA_DIR
 

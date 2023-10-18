@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: MIT
 
 import pytest
-from packit_service_fedmsg.consumer import specfile_changed
+
+from packit_service_fedmsg.utils import specfile_changed
 
 
 @pytest.mark.parametrize(
-    "body, expected",
+    ("body", "expected"),
     [
         pytest.param(
             {
