@@ -23,7 +23,6 @@ class Consumerino:
     """
 
     def __init__(self):
-        self._celery_app = None
         self.environment = getenv("DEPLOYMENT")
         self.packit_user = {"prod": "packit", "stg": "packit-stg"}.get(
             self.environment,
@@ -45,7 +44,7 @@ class Consumerino:
         # https://docs.celeryq.dev/en/latest/userguide/configuration.html#std-setting-task_default_queue
         _celery_app.conf.task_default_queue = "short-running"
 
-        return self._celery_app
+        return _celery_app
 
     @staticmethod
     def configure_sentry():
