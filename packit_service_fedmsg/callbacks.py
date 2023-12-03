@@ -158,7 +158,7 @@ def _anitya_version_update(topic: str, event: dict, packit_user: str) -> Callbac
             pass_to_service=False,
         )
 
-    new_versions = nested_get(event, "message", "project", "upstream_versions")
+    new_versions = nested_get(event, "message", "upstream_versions")
 
     return CallbackResult(
         msg=f"[Anitya] New versions of package {package}: '{', '.join(new_versions)}'",
