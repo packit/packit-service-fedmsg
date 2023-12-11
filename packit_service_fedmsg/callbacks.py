@@ -71,8 +71,13 @@ def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 
 def _fedora_dg_push(topic: str, event: dict, packit_user: str) -> CallbackResult:
-    if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
-        event,
+    if (
+        getenv("PROJECT", "").startswith("packit")
+        # skip the specfile changed check for commits from PRs
+        and nested_get(event, "commit", "agent") != "pagure"
+        and not specfile_changed(
+            event,
+        )
     ):
         return CallbackResult(
             msg="[Fedora DG] No specfile change, ignoring the push.",
