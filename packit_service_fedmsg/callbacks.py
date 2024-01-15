@@ -173,7 +173,7 @@ MAPPING = {
     "org.fedoraproject.prod.copr.build.start": _copr,
     "org.fedoraproject.prod.buildsys.task.state.change": _koji,
     "org.fedoraproject.prod.buildsys.build.state.change": _koji,
-    "org.fedoraproject.prod.git.receive": _fedora_dg_push,
+    "org.fedoraproject.prod.pagure.git.receive": _fedora_dg_push,
     "org.fedoraproject.prod.pagure.pull-request.flag.added": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.flag.updated": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.comment.added": _fedora_dg_pr_comment,
