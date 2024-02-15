@@ -1,7 +1,6 @@
 # Copyright Contributors to the Packit project.
 # SPDX-License-Identifier: MIT
 
-from functools import reduce
 from typing import Any
 
 
@@ -41,11 +40,7 @@ def specfile_changed(body: dict) -> bool:
     Returns:
         `True` if the specfile has changed, `False` otherwise.
     """
-    files = reduce(
-        lambda val, key: val.get(key) if val else None,
-        ["commit", "stats", "files"],
-        body,
-    )
+    files = body.get("changed_files")
     file_names = files.keys() if files else []
 
     return any(file_name.endswith(".spec") for file_name in file_names)

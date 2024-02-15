@@ -1,0 +1,107 @@
+{
+  "body": {
+    "agent": "cathay4t",
+    "authors": [
+      {
+        "fullname": "Packit",
+        "name": null,
+        "url_path": null
+      },
+      {
+        "full_url": "https://src.fedoraproject.org/user/yselkowitz",
+        "fullname": "Yaakov Selkowitz",
+        "name": "yselkowitz",
+        "url_path": "user/yselkowitz"
+      }
+    ],
+    "branch": "1.2.17-rawhide-update-pull_from_upstream",
+    "changed_files": {
+      "nispor.spec": "M"
+    },
+    "end_commit": "e134a94872e6cdf0b421667bef35843ffc2e2794",
+    "forced": true,
+    "old_commit": "04c956ebf012f0e053dced9275d5c8ebdd080edd",
+    "repo": {
+      "access_groups": {
+        "admin": [],
+        "collaborator": [],
+        "commit": [],
+        "ticket": []
+      },
+      "access_users": {
+        "admin": [],
+        "collaborator": [],
+        "commit": ["cathay4t", "ffmancera"],
+        "owner": ["packit"],
+        "ticket": []
+      },
+      "close_status": [],
+      "custom_keys": [],
+      "date_created": "1695187712",
+      "date_modified": "1701990754",
+      "description": "The nispor package\n",
+      "full_url": "https://src.fedoraproject.org/fork/packit/rpms/nispor",
+      "fullname": "forks/packit/rpms/nispor",
+      "id": 66339,
+      "milestones": {},
+      "name": "nispor",
+      "namespace": "rpms",
+      "parent": {
+        "access_groups": {
+          "admin": [],
+          "collaborator": [],
+          "commit": [],
+          "ticket": []
+        },
+        "access_users": {
+          "admin": ["ffmancera"],
+          "collaborator": [],
+          "commit": [],
+          "owner": ["cathay4t"],
+          "ticket": []
+        },
+        "close_status": [],
+        "custom_keys": [],
+        "date_created": "1599236259",
+        "date_modified": "1603815379",
+        "description": "The nispor package\n",
+        "full_url": "https://src.fedoraproject.org/rpms/nispor",
+        "fullname": "rpms/nispor",
+        "id": 45300,
+        "milestones": {},
+        "name": "nispor",
+        "namespace": "rpms",
+        "parent": null,
+        "priorities": {},
+        "tags": [],
+        "url_path": "rpms/nispor",
+        "user": {
+          "full_url": "https://src.fedoraproject.org/user/cathay4t",
+          "fullname": "Gris Ge",
+          "name": "cathay4t",
+          "url_path": "user/cathay4t"
+        }
+      },
+      "priorities": {},
+      "tags": [],
+      "url_path": "fork/packit/rpms/nispor",
+      "user": {
+        "full_url": "https://src.fedoraproject.org/user/packit",
+        "fullname": "Packit Bot",
+        "name": "packit",
+        "url_path": "user/packit"
+      }
+    },
+    "start_commit": "a80772d8fdc093a2080bda050daf4e66bff585eb",
+    "total_commits": 2
+  },
+  "headers": {
+    "fedora_messaging_schema": "pagure.git.receive",
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_cathay4t": true,
+    "sent-at": "2024-02-08T07:29:14+00:00"
+  },
+  "id": "d98e4f3f-2e6a-4634-b86b-8abbae9c54d3",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.pagure.git.receive"
+}
