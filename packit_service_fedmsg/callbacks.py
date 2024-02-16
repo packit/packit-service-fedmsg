@@ -71,23 +71,17 @@ def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 
 def _fedora_dg_push(topic: str, event: dict, packit_user: str) -> CallbackResult:
-    if (
-        getenv("PROJECT", "").startswith("packit")
-        # skip the specfile changed check for commits from PRs
-        and nested_get(event, "commit", "agent") != "pagure"
-        and not specfile_changed(
-            event,
-        )
+    if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
+        event,
     ):
         return CallbackResult(
             msg="[Fedora DG] No specfile change, ignoring the push.",
             pass_to_service=False,
         )
 
-    if commit := event.get("commit"):
-        what = f"{commit.get('repo')} {commit.get('rev')}@{commit.get('branch')}"
-    else:
-        what = "Couldn't get commit out of the event."
+    repo_name = nested_get(event, "repo", "name")
+
+    what = f"{repo_name} {event.get('end_commit')}@{event.get('branch')}"
 
     return CallbackResult(msg=f"[Fedora DG] Passing push: {what}")
 
@@ -173,7 +167,7 @@ MAPPING = {
     "org.fedoraproject.prod.copr.build.start": _copr,
     "org.fedoraproject.prod.buildsys.task.state.change": _koji,
     "org.fedoraproject.prod.buildsys.build.state.change": _koji,
-    "org.fedoraproject.prod.git.receive": _fedora_dg_push,
+    "org.fedoraproject.prod.pagure.git.receive": _fedora_dg_push,
     "org.fedoraproject.prod.pagure.pull-request.flag.added": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.flag.updated": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.comment.added": _fedora_dg_pr_comment,
