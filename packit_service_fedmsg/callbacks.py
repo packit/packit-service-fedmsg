@@ -47,26 +47,21 @@ def _copr(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 
 def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
-    # TODO: accept builds run by other owners as well
-    # (For the `bodhi_update` job.)
-    if event.get("owner") != packit_user:
-        return CallbackResult(
-            msg=f"[Koji] Koji build not built by {packit_user}.",
-            pass_to_service=False,
-        )
-
     if "buildsys.build.state" in topic:
         what = (
             f"[Koji] build:{event.get('build_id')} task:{event.get('task_id')}"
             f" {event.get('old')}->{event.get('new')}"
         )
+        return CallbackResult(msg=what)
 
-    # SAFETY: It's either ‹build.state› or ‹task.state›, as they are the topics
-    # handled by this callback, therefore ‹what› **will** be declared one way or
-    # another.
-    if "buildsys.task.state" in topic:  # scratch build
-        what = f"[Koji] id:{event.get('id')} {event.get('old')}->{event.get('new')}"
+    # for scratch builds, consider only builds by packit
+    if event.get("owner") != packit_user:
+        return CallbackResult(
+            msg=f"[Koji] Koji scratch build not built by {packit_user}.",
+            pass_to_service=False,
+        )
 
+    what = f"[Koji] id:{event.get('id')} {event.get('old')}->{event.get('new')}"
     return CallbackResult(msg=what)
 
 
