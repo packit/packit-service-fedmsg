@@ -48,6 +48,18 @@ def _copr(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
     if "buildsys.build.state" in topic:
+        if nested_get(event, "task", "method") != "build":
+            return CallbackResult(
+                msg="[Koji] Koji build with method other than 'build'.",
+                pass_to_service=False,
+            )
+
+        if event.get("owner") == "releng":
+            return CallbackResult(
+                msg="[Koji] Koji build built by 'releng'.",
+                pass_to_service=False,
+            )
+
         what = (
             f"[Koji] build:{event.get('build_id')} task:{event.get('task_id')}"
             f" {event.get('old')}->{event.get('new')}"

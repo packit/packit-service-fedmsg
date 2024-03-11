@@ -1,0 +1,96 @@
+{
+  "body": {
+    "attribute": "state",
+    "base_url": "https://koji.fedoraproject.org",
+    "build_id": 2417365,
+    "completion_time": null,
+    "creation_time": "2024-03-09T10:58:48.081872+00:00",
+    "epoch": 0,
+    "files_base_url": "https://kojipkgs.fedoraproject.org/work",
+    "instance": "primary",
+    "name": "Fedora-Python-Classroom-Vagrant",
+    "new": 0,
+    "old": null,
+    "owner": "releng",
+    "release": "20240309.n.0",
+    "request": [
+      "Fedora-Python-Classroom-Vagrant",
+      "40",
+      ["x86_64"],
+      "f40",
+      "https://kojipkgs.fedoraproject.org/compose/branched/Fedora-40-20240309.n.0/compose/Everything/$arch/os",
+      {
+        "disk_size": "40",
+        "distro": "Fedora-22",
+        "factory_parameter": [
+          ["ova-option", "vagrant_sync_directory=/home/vagrant/sync"]
+        ],
+        "format": ["vagrant-libvirt", "vagrant-virtualbox"],
+        "kickstart": "fedora-python-classroom-vagrant.ks",
+        "ksurl": "git+https://pagure.io/fedora-kickstarts.git?#0da52a87fd06a7255c431425b3ff424b4c365ac2",
+        "optional_arches": ["x86_64"],
+        "release": "20240309.n.0",
+        "repo": [
+          "https://kojipkgs.fedoraproject.org/compose/branched/Fedora-40-20240309.n.0/compose/Everything/$arch/os"
+        ]
+      }
+    ],
+    "task": {
+      "arch": "noarch",
+      "awaited": null,
+      "channel_id": 12,
+      "children": [],
+      "completion_time": null,
+      "create_time": 1709981906.0,
+      "host_id": 393,
+      "host_name": "buildvm-x86-22.iad2.fedoraproject.org",
+      "id": 114706305,
+      "label": null,
+      "method": "image",
+      "owner": "releng",
+      "parent": null,
+      "priority": 20,
+      "request": [
+        "Fedora-Python-Classroom-Vagrant",
+        "40",
+        ["x86_64"],
+        "f40",
+        "https://kojipkgs.fedoraproject.org/compose/branched/Fedora-40-20240309.n.0/compose/Everything/$arch/os",
+        {
+          "disk_size": "40",
+          "distro": "Fedora-22",
+          "factory_parameter": [
+            ["ova-option", "vagrant_sync_directory=/home/vagrant/sync"]
+          ],
+          "format": ["vagrant-libvirt", "vagrant-virtualbox"],
+          "kickstart": "fedora-python-classroom-vagrant.ks",
+          "ksurl": "git+https://pagure.io/fedora-kickstarts.git?#0da52a87fd06a7255c431425b3ff424b4c365ac2",
+          "optional_arches": ["x86_64"],
+          "release": "20240309.n.0",
+          "repo": [
+            "https://kojipkgs.fedoraproject.org/compose/branched/Fedora-40-20240309.n.0/compose/Everything/$arch/os"
+          ]
+        }
+      ],
+      "result": null,
+      "start_time": 1709981927.0,
+      "state": 1,
+      "url": "https://koji.fedoraproject.org/koji/taskinfo?taskID=114706305",
+      "waiting": null
+    },
+    "task_id": 114706305,
+    "url": "https://koji.fedoraproject.org/koji/buildinfo?buildID=2417365",
+    "version": "40"
+  },
+  "headers": {
+    "fedora_messaging_rpm_Fedora-Python-Classroom-Vagrant": true,
+    "fedora_messaging_schema": "koji_fedoramessaging.build.BuildStateChangeV1",
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_releng": true,
+    "priority": 0,
+    "sent-at": "2024-03-09T10:58:48+00:00"
+  },
+  "id": "794b79c6-026c-4c43-9d96-bb7ad872c8be",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.buildsys.build.state.change"
+}
