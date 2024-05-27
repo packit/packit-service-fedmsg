@@ -9,6 +9,7 @@
           - git # setuptools-scm
           - fedora-messaging
           - python3-copr-messaging # json schemas
+          - python3-requests
         state: present
 
     - name: Install pip deps
