@@ -1,7 +1,8 @@
 FROM quay.io/packit/base:c9s
 
 ENV USER=packit \
-    HOME=/home/packit
+    HOME=/home/packit \
+    PYTHONPATH="/usr/local/lib/python3.9/site-packages"
 
 COPY files/install-deps.yaml /src/files/
 RUN cd /src/ \
