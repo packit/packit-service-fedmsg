@@ -47,6 +47,10 @@ def _copr(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 
 def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
+    if "buildsys.tag" in topic:
+        what = f"[Koji] build:{event.get('build_id')} tag:{event.get('tag_name')}"
+        return CallbackResult(msg=what)
+
     if "buildsys.build.state" in topic:
         if nested_get(event, "task", "method") != "build":
             return CallbackResult(
@@ -174,6 +178,7 @@ MAPPING = {
     "org.fedoraproject.prod.copr.build.start": _copr,
     "org.fedoraproject.prod.buildsys.task.state.change": _koji,
     "org.fedoraproject.prod.buildsys.build.state.change": _koji,
+    "org.fedoraproject.prod.buildsys.tag": _koji,
     "org.fedoraproject.prod.pagure.git.receive": _fedora_dg_push,
     "org.fedoraproject.prod.pagure.pull-request.flag.added": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.flag.updated": _fedora_dg_pr_flag,
