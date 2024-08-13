@@ -48,7 +48,14 @@ def _copr(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
     if "buildsys.tag" in topic:
-        what = f"[Koji] build:{event.get('build_id')} tag:{event.get('tag_name')}"
+        if "-side-" not in event.get("tag"):
+            # consider only tagging into sidetags
+            return CallbackResult(
+                msg="[Koji] Koji build not tagged into a sidetag.",
+                pass_to_service=False,
+            )
+
+        what = f"[Koji] build:{event.get('build_id')} tag:{event.get('tag')}"
         return CallbackResult(msg=what)
 
     if "buildsys.build.state" in topic:
