@@ -177,6 +177,17 @@ def _anitya_version_update(topic: str, event: dict, packit_user: str) -> Callbac
     )
 
 
+def _openscanhub_task_finished(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    return CallbackResult(
+        msg=f"[OpenScanHub] OpenScanHub task {event.get('task_id')} finished:"
+        f" added.js={event.get('added.js')}, fixed.js={event.get('fixed.js')}",
+    )
+
+
 # [WARNING]
 # Configuration of the topics to listen to needs to be changed in
 # a respective fedora.toml.j2 (https://github.com/packit/deployment/tree/main/secrets)
@@ -193,4 +204,5 @@ MAPPING = {
     "org.fedoraproject.prod.pagure.pull-request.closed": _fedora_dg_pr_closed,
     "org.fedoraproject.prod.hotness.update.bug.file": _hotness_bugzilla,
     "org.release-monitoring.prod.anitya.project.version.update.v2": _anitya_version_update,
+    "org.fedoraproject.prod.openscanhub.task.finish": _openscanhub_task_finished,
 }
