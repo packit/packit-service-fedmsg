@@ -1,0 +1,15 @@
+{
+  "body": {
+    "task_id": 18304
+  },
+  "headers": {
+    "fedora_messaging_schema": "base.message",
+    "fedora_messaging_severity": 20,
+    "priority": 0,
+    "sent-at": "2024-10-20T07:58:23+00:00"
+  },
+  "id": "39d00df3-a8d0-40be-b555-970e9259fb69",
+  "priority": 0,
+  "queue": null,
+  "topic": "org.fedoraproject.prod.openscanhub.task.started"
+}

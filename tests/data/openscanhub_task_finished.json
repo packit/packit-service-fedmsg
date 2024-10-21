@@ -1,19 +1,19 @@
 {
   "body": {
-    "added.js": "http://openscanhub.fedoraproject.org/task/15649/log/added.js?format=raw",
-    "fixed.js": "http://openscanhub.fedoraproject.org/task/15649/log/fixed.js?format=raw",
-    "scan-results.js": "http://openscanhub.fedoraproject.org/task/15649/log/gvisor-tap-vsock-0.7.5-1.20241007054606793155.pr405.23.g829aafd6/scan-results.js?format=raw",
-    "task_id": 15649
+    "added.js": "http://openscanhub.fedoraproject.org/task/18302/log/added.js?format=raw",
+    "fixed.js": "http://openscanhub.fedoraproject.org/task/18302/log/fixed.js?format=raw",
+    "scan-results.js": "http://openscanhub.fedoraproject.org/task/18302/log/podman-5.3.0~dev-1.20241020030546559147.pr24321.1796.24c178f39/scan-results.js?format=raw",
+    "status": "success",
+    "task_id": 18302
   },
   "headers": {
     "fedora_messaging_schema": "base.message",
     "fedora_messaging_severity": 20,
     "priority": 0,
-    "sent-at": "2024-10-07T06:03:21+00:00",
-    "task_id": 15649
+    "sent-at": "2024-10-20T03:44:53+00:00"
   },
-  "id": "631f77b4-74f8-41ca-b3e7-47401e30cc67",
+  "id": "36b9d2be-5452-467d-8503-d68462e8aa74",
   "priority": 0,
   "queue": null,
-  "topic": "org.fedoraproject.prod.openscanhub.task.finish"
+  "topic": "org.fedoraproject.prod.openscanhub.task.finished"
 }
