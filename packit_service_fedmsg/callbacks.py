@@ -183,8 +183,19 @@ def _openscanhub_task_finished(
     packit_user: str,
 ) -> CallbackResult:
     return CallbackResult(
-        msg=f"[OpenScanHub] OpenScanHub task {event.get('task_id')} finished:"
-        f" added.js={event.get('added.js')}, fixed.js={event.get('fixed.js')}",
+        msg=f"[OpenScanHub] OpenScanHub task {event.get('task_id')} "
+        f"finished with status {event.get('status')}: "
+        f"added.js={event.get('added.js')}, fixed.js={event.get('fixed.js')}.",
+    )
+
+
+def _openscanhub_task_started(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    return CallbackResult(
+        msg=f"[OpenScanHub] OpenScanHub task {event.get('task_id')} started.",
     )
 
 
@@ -204,5 +215,6 @@ MAPPING = {
     "org.fedoraproject.prod.pagure.pull-request.closed": _fedora_dg_pr_closed,
     "org.fedoraproject.prod.hotness.update.bug.file": _hotness_bugzilla,
     "org.release-monitoring.prod.anitya.project.version.update.v2": _anitya_version_update,
-    "org.fedoraproject.prod.openscanhub.task.finish": _openscanhub_task_finished,
+    "org.fedoraproject.prod.openscanhub.task.started": _openscanhub_task_started,
+    "org.fedoraproject.prod.openscanhub.task.finished": _openscanhub_task_finished,
 }
