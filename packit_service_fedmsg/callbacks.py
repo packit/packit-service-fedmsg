@@ -104,6 +104,33 @@ def _fedora_dg_push(topic: str, event: dict, packit_user: str) -> CallbackResult
     return CallbackResult(msg=f"[Fedora DG] Passing push: {what}")
 
 
+def _fedora_dg_pr_new(topic: str, event: dict, packit_user: str) -> CallbackResult:
+    return CallbackResult(
+        msg=(
+            f"[Fedora DG] PR #{nested_get(event, 'pullrequest', 'id')} opened in "
+            f"{nested_get(event, 'pullrequest', 'project', 'fullname')}"
+        ),
+    )
+
+
+def _fedora_dg_pr_updated(topic: str, event: dict, packit_user: str) -> CallbackResult:
+    return CallbackResult(
+        msg=(
+            f"[Fedora DG] PR #{nested_get(event, 'pullrequest', 'id')} updated in "
+            f"{nested_get(event, 'pullrequest', 'project', 'fullname')}"
+        ),
+    )
+
+
+def _fedora_dg_pr_rebased(topic: str, event: dict, packit_user: str) -> CallbackResult:
+    return CallbackResult(
+        msg=(
+            f"[Fedora DG] PR #{nested_get(event, 'pullrequest', 'id')} rebased in "
+            f"{nested_get(event, 'pullrequest', 'project', 'fullname')}"
+        ),
+    )
+
+
 def _fedora_dg_pr_flag(topic: str, event: dict, packit_user: str) -> CallbackResult:
     if nested_get(event, "pullrequest", "user", "name") != packit_user:
         return CallbackResult(
@@ -209,6 +236,9 @@ MAPPING = {
     "org.fedoraproject.prod.buildsys.build.state.change": _koji,
     "org.fedoraproject.prod.buildsys.tag": _koji,
     "org.fedoraproject.prod.pagure.git.receive": _fedora_dg_push,
+    "org.fedoraproject.prod.pagure.pull-request.new": _fedora_dg_pr_new,
+    "org.fedoraproject.prod.pagure.pull-request.updated": _fedora_dg_pr_updated,
+    "org.fedoraproject.prod.pagure.pull-request.rebased": _fedora_dg_pr_rebased,
     "org.fedoraproject.prod.pagure.pull-request.flag.added": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.flag.updated": _fedora_dg_pr_flag,
     "org.fedoraproject.prod.pagure.pull-request.comment.added": _fedora_dg_pr_comment,
