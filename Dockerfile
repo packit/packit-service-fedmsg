@@ -5,8 +5,10 @@ ENV USER=packit \
     HOME=/home/packit \
     # [NOTE] Fixes the issue with importing after upgrading Fedora Messaging to
     # 3.5.0: fedora-infra/fedora-messaging#364
-    # PYTHONPATH="/usr/local/lib/python3.9/site-packages"  # CentOS Stream 9
-    PYTHONPATH="/usr/local/lib/python3.13/site-packages"  # Fedora 41
+    # CentOS Stream 9
+    # PYTHONPATH="/usr/local/lib/python3.9/site-packages"
+    # Fedora 41
+    PYTHONPATH="/usr/local/lib/python3.13/site-packages"
 
 COPY files/install-deps.yaml /src/files/
 RUN cd /src/ \
