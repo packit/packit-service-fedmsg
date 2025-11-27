@@ -226,6 +226,16 @@ def _openscanhub_task_started(
     )
 
 
+def _logdetective_analysis_result(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    return CallbackResult(
+        msg=f"[LogDetective] analysis for {event.get('target_build')} is available.",
+    )
+
+
 # [WARNING]
 # Configuration of the topics to listen to needs to be changed in
 # a respective fedora.toml.j2 (https://github.com/packit/deployment/tree/main/secrets)
@@ -247,4 +257,5 @@ MAPPING = {
     "org.release-monitoring.prod.anitya.project.version.update.v2": _anitya_version_update,
     "org.fedoraproject.prod.openscanhub.task.started": _openscanhub_task_started,
     "org.fedoraproject.prod.openscanhub.task.finished": _openscanhub_task_finished,
+    "org.fedoraproject.prod.logdetective.analysis": _logdetective_analysis_result,
 }
