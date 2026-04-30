@@ -7,8 +7,8 @@ ENV USER=packit \
     # 3.5.0: fedora-infra/fedora-messaging#364
     # CentOS Stream 9
     # PYTHONPATH="/usr/local/lib/python3.9/site-packages"
-    # Fedora 41
-    PYTHONPATH="/usr/local/lib/python3.13/site-packages"
+    # Fedora 43
+    PYTHONPATH="/usr/local/lib/python3.14/site-packages"
 
 COPY files/install-deps.yaml /src/files/
 RUN cd /src/ \
