@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: MIT
 
 from dataclasses import dataclass
+from logging import getLogger
 from os import getenv
 from typing import Callable
 
 from packit_service_fedmsg.utils import nested_get, specfile_changed
+
+logger = getLogger(__name__)
 
 
 @dataclass
@@ -86,6 +89,83 @@ def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
     what = f"[Koji] id:{event.get('id')} {event.get('old')}->{event.get('new')}"
     return CallbackResult(msg=what)
+
+
+def _forgejo_push(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
+        event,
+    ):
+        return CallbackResult(
+            msg="[Fedora DG] No specfile change, ignoring the push.",
+            pass_to_service=False,
+        )
+
+    payload = event.get("body", {})
+    repo_name = nested_get(payload, "repository", "name")
+    commit_sha = payload.get("after")
+    raw_ref = payload.get("ref")
+    ref = None
+
+    try:
+        ref = raw_ref.split("/", 2)[2]
+    except (AttributeError, IndexError):
+        logger.warning("Unexpected format of ref in Forgejo push event.")
+
+    what = f"{repo_name} {commit_sha}@{ref}"
+    return CallbackResult(msg=f"[Fedora DG] Passing push: {what}")
+
+
+def _forgejo_pull_request(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    payload = event.get("body", {})
+
+    return CallbackResult(
+        msg=(
+            f"[Fedora DG] PR #{nested_get(payload, 'pull_request', 'number')} opened in "
+            f"{nested_get(payload, 'pull_request', 'base', 'repo', 'full_name')}"
+        ),
+    )
+
+
+def _forgejo_comment(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    payload = event.get("body", {})
+    project = nested_get(payload, "repository", "full_name")
+    comment = nested_get(payload, "comment")
+
+    return CallbackResult(
+        msg=(
+            f"[Fedora DG] For {project}"
+            f" new comment: '{comment.get('body')}'"
+            f" from {nested_get(comment, 'user', 'login')}"
+        ),
+    )
+
+
+def _forgejo_action_run(
+    topic: str,
+    event: dict,
+    packit_user: str,
+) -> CallbackResult:
+    run = nested_get(event, "body", "run")
+
+    return CallbackResult(
+        msg=(
+            f"[Fedora DG] Action run {run.get('title')}"
+            f" in '{nested_get(run, 'repository', 'full_name')}'"
+            f" finished with '{run.get('status')}'"
+        ),
+    )
 
 
 def _fedora_dg_push(topic: str, event: dict, packit_user: str) -> CallbackResult:
@@ -245,6 +325,13 @@ MAPPING = {
     "org.fedoraproject.prod.buildsys.task.state.change": _koji,
     "org.fedoraproject.prod.buildsys.build.state.change": _koji,
     "org.fedoraproject.prod.buildsys.tag": _koji,
+    "org.fedoraproject.prod.forgejo.push": _forgejo_push,
+    "org.fedoraproject.prod.forgejo.pull_request": _forgejo_pull_request,
+    "org.fedoraproject.prod.forgejo.issue_comment": _forgejo_comment,
+    "org.fedoraproject.prod.forgejo.action_run_success": _forgejo_action_run,
+    "org.fedoraproject.prod.forgejo.action_run_failure": _forgejo_action_run,
+    "org.fedoraproject.prod.forgejo.action_run_recover": _forgejo_action_run,
+    "org.fedoraproject.prod.forgejo.action_run_cancelled": _forgejo_action_run,
     "org.fedoraproject.prod.pagure.git.receive": _fedora_dg_push,
     "org.fedoraproject.prod.pagure.pull-request.new": _fedora_dg_pr_new,
     "org.fedoraproject.prod.pagure.pull-request.updated": _fedora_dg_pr_updated,
