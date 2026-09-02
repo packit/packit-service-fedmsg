@@ -54,3 +54,12 @@ def test_dg_action_run_event():
         msg = message.loads(json.dumps(json_msg))
         c = Consumerino()
         c(msg[0])
+
+
+def test_reject_upstream_event():
+    flexmock(Celery).should_receive("send_task").never()
+    with open(DATA_DIR / "forgejo_upstream_push.json") as outfile:
+        json_msg = json.load(outfile)
+        msg = message.loads(json.dumps(json_msg))
+        c = Consumerino()
+        c(msg[0])
