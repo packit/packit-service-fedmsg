@@ -6,7 +6,11 @@ from logging import getLogger
 from os import getenv
 from typing import Callable
 
-from packit_service_fedmsg.utils import nested_get, specfile_changed
+from packit_service_fedmsg.utils import (
+    is_fedora_dist_git_url,
+    nested_get,
+    specfile_changed,
+)
 
 logger = getLogger(__name__)
 
@@ -96,6 +100,15 @@ def _forgejo_push(
     event: dict,
     packit_user: str,
 ) -> CallbackResult:
+    payload = event.get("body", {})
+    repo_url = nested_get(payload, "repository", "html_url")
+
+    if not is_fedora_dist_git_url(repo_url):
+        return CallbackResult(
+            msg="[Fedora] Packit currently doesn't support upstream events.",
+            pass_to_service=False,
+        )
+
     if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
         event,
     ):
@@ -104,7 +117,6 @@ def _forgejo_push(
             pass_to_service=False,
         )
 
-    payload = event.get("body", {})
     repo_name = nested_get(payload, "repository", "name")
     commit_sha = payload.get("after")
     raw_ref = payload.get("ref")
@@ -125,6 +137,13 @@ def _forgejo_pull_request(
     packit_user: str,
 ) -> CallbackResult:
     payload = event.get("body", {})
+    repo_url = nested_get(payload, "repository", "html_url")
+
+    if not is_fedora_dist_git_url(repo_url):
+        return CallbackResult(
+            msg="[Fedora] Packit currently doesn't support upstream events.",
+            pass_to_service=False,
+        )
 
     return CallbackResult(
         msg=(
@@ -140,6 +159,14 @@ def _forgejo_comment(
     packit_user: str,
 ) -> CallbackResult:
     payload = event.get("body", {})
+    repo_url = nested_get(payload, "repository", "html_url")
+
+    if not is_fedora_dist_git_url(repo_url):
+        return CallbackResult(
+            msg="[Fedora] Packit currently doesn't support upstream events.",
+            pass_to_service=False,
+        )
+
     project = nested_get(payload, "repository", "full_name")
     comment = nested_get(payload, "comment")
 
@@ -158,6 +185,13 @@ def _forgejo_action_run(
     packit_user: str,
 ) -> CallbackResult:
     run = nested_get(event, "body", "run")
+    repo_url = nested_get(run, "repository", "html_url")
+
+    if not is_fedora_dist_git_url(repo_url):
+        return CallbackResult(
+            msg="[Fedora] Packit currently doesn't support upstream events.",
+            pass_to_service=False,
+        )
 
     return CallbackResult(
         msg=(
