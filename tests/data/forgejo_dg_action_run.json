@@ -1,0 +1,30 @@
+{
+  "body": {
+    "agent": null,
+    "body": {
+      "action": "success",
+      "prior_status": "running",
+      "run": {
+        "commit_sha": "e6308b118d067dc9b12551079918d32938d6f36e",
+        "created": "2026-09-02T09:07:00Z",
+        "duration": 30000000000,
+        "event": "push",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo/actions/runs/2173",
+        "id": 6439,
+        "index_in_repo": 2173,
+        "prettyref": "main",
+        "repository": {
+          "full_name": "rpms/somerepo",
+          "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+          "name": "somerepo"
+        },
+        "started": "2026-09-02T09:07:01Z",
+        "status": "success",
+        "stopped": "2026-09-02T09:07:31Z",
+        "title": "Title of action run",
+        "trigger_event": "push"
+      }
+    }
+  },
+  "topic": "org.fedoraproject.prod.forgejo.action_run_success"
+}
