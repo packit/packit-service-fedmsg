@@ -1,0 +1,36 @@
+{
+  "body": {
+    "agent": null,
+    "body": {
+      "action": "closed",
+      "commit_id": "",
+      "number": 3652,
+      "pull_request": {
+        "allow_maintainer_edit": false,
+        "base": {
+          "ref": "main",
+          "repo": {
+            "full_name": "rpms/somerepo",
+            "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+            "name": "somerepo"
+          },
+          "repo_id": 1872,
+          "sha": "5dff5e8324a14e003d062dc22663a942dfe41e12"
+        },
+        "html_url": "https://src.fedoraproject.org/user/somerepo/pulls/3652",
+        "id": 60233,
+        "is_locked": false,
+        "number": 3652,
+        "state": "closed",
+        "title": "title",
+        "updated_at": "2026-09-02T09:06:56Z"
+      },
+      "repository": {
+        "full_name": "rpms/somerepo",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+        "name": "somerepo"
+      }
+    }
+  },
+  "topic": "org.fedoraproject.prod.forgejo.pull_request"
+}

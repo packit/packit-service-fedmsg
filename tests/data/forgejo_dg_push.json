@@ -1,0 +1,23 @@
+{
+  "body": {
+    "agent": null,
+    "body": {
+      "after": "62f1ae5bb1815555c21db4f136494bb042e6fb5e",
+      "before": "ad7353c15dc42a887398ef3babbcdc6df20bb25b",
+      "ref": "refs/heads/eln",
+      "repository": {
+        "full_name": "rpms/somerepo",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+        "name": "somerepo"
+      }
+    }
+  },
+  "headers": {
+    "fedora_messaging_schema": "webhook_to_fedora_messaging.forgejo.message_v1",
+    "fedora_messaging_schema_package": "webhook_to_fedora_messaging_messages",
+    "fedora_messaging_severity": 20,
+    "priority": 0,
+    "sent-at": "2026-09-01T20:15:42+00:00"
+  },
+  "topic": "org.fedoraproject.prod.forgejo.push"
+}

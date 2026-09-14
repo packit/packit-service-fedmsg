@@ -1,0 +1,24 @@
+{
+  "body": {
+    "agent": null,
+    "body": {
+      "action": "created",
+      "comment": {
+        "body": "comment body",
+        "updated_at": "2026-09-02T08:00:20Z",
+        "user": {
+          "login": "user",
+          "login_name": "",
+          "username": "user"
+        }
+      },
+      "is_pull": false,
+      "repository": {
+        "full_name": "rpms/somerepo",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+        "name": "somerepo"
+      }
+    }
+  },
+  "topic": "org.fedoraproject.prod.forgejo.issue_comment"
+}

@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: MIT
 
 from typing import Any
+from urllib.parse import urlparse
+
+from packit_service_fedmsg.constants import FEDORA_DIST_GIT_HOSTNAMES
 
 
 def nested_get(d: dict, *keys, default=None) -> Any:
@@ -44,3 +47,21 @@ def specfile_changed(body: dict) -> bool:
     file_names = files.keys() if files else []
 
     return any(file_name.endswith(".spec") for file_name in file_names)
+
+
+def is_fedora_dist_git_url(url: str) -> bool:
+    """
+    Does the specified url belong to Fedora dist-git?
+
+    Args:
+        url: Repo url
+
+    Returns:
+        `True` if url belongs to Fedora dist-git, `False` otherwise.
+    """
+    if not url:
+        return False
+
+    return any(
+        hostname == urlparse(url).hostname for hostname in FEDORA_DIST_GIT_HOSTNAMES
+    )

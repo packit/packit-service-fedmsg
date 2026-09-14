@@ -1,0 +1,54 @@
+{
+  "body": {
+    "agent": null,
+    "body": {
+      "action": "edited",
+      "comment": {
+        "body": "The body of the comment",
+        "created_at": "2026-09-01T22:24:51Z",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo/pulls/12345#issuecomment-6789",
+        "pull_request_url": "https://src.fedoraproject.org/rpms/somerepo/pulls/3652",
+        "updated_at": "2026-09-01T22:28:59Z",
+        "user": {
+          "full_name": "Some User",
+          "html_url": "https://src.fedoraproject.org/someuser",
+          "login": "someuser",
+          "login_name": "",
+          "username": "someuser"
+        }
+      },
+      "is_pull": true,
+      "pull_request": {
+        "base": {
+          "ref": "main",
+          "repo": {
+            "full_name": "rpms/somerepo",
+            "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+            "name": "somerepo"
+          }
+        },
+        "body": "Body of comment",
+        "head": {
+          "ref": "someref",
+          "repo": {
+            "full_name": "someuser/somerepo",
+            "html_url": "https://src.fedoraproject.org/someuser/somerepo",
+            "id": 1872,
+            "name": "somerepo"
+          }
+        },
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo/pulls/3652",
+        "number": 12345,
+        "state": "open",
+        "title": "PR title",
+        "updated_at": "2026-09-01T22:24:51Z"
+      },
+      "repository": {
+        "full_name": "rpms/somerepo",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+        "name": "somerepo"
+      }
+    }
+  },
+  "topic": "org.fedoraproject.prod.forgejo.issue_comment"
+}
