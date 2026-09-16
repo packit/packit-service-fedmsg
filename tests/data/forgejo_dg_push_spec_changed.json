@@ -1,0 +1,70 @@
+{
+  "body": {
+    "agent": null,
+    "body": {
+      "after": "98ad9b19704298d3aa27c9d72089b2aca25823f7",
+      "before": "c035224cad6cb18f3353fcc513cfed96f7e06509",
+      "commits": [
+        {
+          "added": [],
+          "author": {
+            "email": "user@redhat.com",
+            "name": "User Name",
+            "username": "username"
+          },
+          "committer": {
+            "email": "user@redhat.com",
+            "name": "User Name",
+            "username": "username"
+          },
+          "id": "98ad9b19704298d3aa27c9d72089b2aca25823f7",
+          "message": "commit message",
+          "modified": ["package.spec"],
+          "removed": [],
+          "timestamp": "2026-09-03T23:12:47-04:00",
+          "url": "https://src.fedoraproject.org/rpms/somerepo/commit/98ad9b19704298d3aa27c9d72089b2aca25823f7",
+          "verification": null
+        }
+      ],
+      "compare_url": "https://src.fedoraproject.org/rpms/somerepo/compare/c035224cad6cb18f3353fcc513cfed96f7e06509...98ad9b19704298d3aa27c9d72089b2aca25823f7",
+      "head_commit": {
+        "added": [],
+        "author": {
+          "email": "user@redhat.com",
+          "name": "User Name",
+          "username": "username"
+        },
+        "committer": {
+          "email": "user@redhat.com",
+          "name": "User Name",
+          "username": "username"
+        },
+        "id": "98ad9b19704298d3aa27c9d72089b2aca25823f7",
+        "message": "commit message",
+        "modified": ["package.spec"],
+        "removed": [],
+        "timestamp": "2026-09-03T23:12:47-04:00",
+        "url": "https://src.fedoraproject.org/rpms/somerepo/commit/98ad9b19704298d3aa27c9d72089b2aca25823f7",
+        "verification": null
+      },
+      "ref": "refs/heads/main",
+      "repository": {
+        "full_name": "rpms/somerepo",
+        "html_url": "https://src.fedoraproject.org/rpms/somerepo",
+        "name": "somerepo"
+      },
+      "total_commits": 1
+    }
+  },
+  "headers": {
+    "fedora_messaging_schema": "webhook_to_fedora_messaging.forgejo.message_v1",
+    "fedora_messaging_schema_package": "webhook_to_fedora_messaging_messages",
+    "fedora_messaging_severity": 20,
+    "priority": 0,
+    "sent-at": "2026-09-04T03:18:04+00:00"
+  },
+  "id": "7aa53529-e307-4c17-b2e1-596db49f58a7",
+  "priority": 0,
+  "queue": null,
+  "topic": "org.fedoraproject.prod.forgejo.push"
+}
