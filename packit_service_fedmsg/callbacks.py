@@ -90,6 +90,7 @@ def _koji(topic: str, event: dict, packit_user: str) -> CallbackResult:
 
 def _fedora_dg_push(topic: str, event: dict, packit_user: str) -> CallbackResult:
     if getenv("PROJECT", "").startswith("packit") and not specfile_changed(
+        topic,
         event,
     ):
         return CallbackResult(

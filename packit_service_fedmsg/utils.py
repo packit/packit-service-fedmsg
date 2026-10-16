@@ -30,7 +30,7 @@ def nested_get(d: dict, *keys, default=None) -> Any:
     return response
 
 
-def specfile_changed(body: dict) -> bool:
+def specfile_changed(topic: str, body: dict) -> bool:
     """
     Does the commit contain specfile change?
 
@@ -40,6 +40,18 @@ def specfile_changed(body: dict) -> bool:
     Returns:
         `True` if the specfile has changed, `False` otherwise.
     """
+    # Forgejo push events
+    if topic == "org.fedoraproject.prod.forgejo.push":
+        head_commit = nested_get(body, "body", "head_commit") or {}
+        modified = head_commit.get("modified") or []
+        added = head_commit.get("added") or []
+        removed = head_commit.get("removed") or []
+
+        file_names = modified + added + removed
+
+        return any(file_name.endswith(".spec") for file_name in file_names)
+
+    # Pagure git receive events
     files = body.get("changed_files")
     file_names = files.keys() if files else []
 
